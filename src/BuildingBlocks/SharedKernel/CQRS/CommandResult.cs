@@ -10,10 +10,8 @@ public sealed class CommandResult
 
     public object Data { get; private set; }
 
-    private CommandResult()
-    {
-    }
-
+    private CommandResult() { }
+    
     public static CommandResult Success(object data = null)
     {
         return new CommandResult
