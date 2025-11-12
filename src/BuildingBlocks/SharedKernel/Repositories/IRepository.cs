@@ -1,6 +1,7 @@
-﻿using System.Linq.Expressions;
+﻿using SharedKernel.Entities;
+using System.Linq.Expressions;
 
-namespace SharedKernel;
+namespace SharedKernel.Repositories;
 
 public interface IRepository<T> where T : BaseEntity //later I will add IAggregateRoot
 {
