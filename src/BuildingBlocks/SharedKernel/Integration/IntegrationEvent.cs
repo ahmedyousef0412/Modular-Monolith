@@ -1,4 +1,4 @@
-﻿namespace SharedKernel;
+﻿namespace SharedKernel.Integration;
 
 public class IntegrationEvent
 {
