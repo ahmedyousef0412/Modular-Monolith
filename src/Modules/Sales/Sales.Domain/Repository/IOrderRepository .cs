@@ -8,7 +8,6 @@ public interface IOrderRepository
     Task<IEnumerable<Order>> GetByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default);
 
     Task<IEnumerable<Order>> GetAllAsync(CancellationToken cancellationToken = default);
-    void Add(Order order, CancellationToken cancellationToken = default);
+    void Add(Order order);
 
-    void Update(Order order);
 }
