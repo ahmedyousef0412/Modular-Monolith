@@ -25,7 +25,7 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Gui
         foreach (var item in command.Items)
             order.AddItem(item.ProductName, item.Quantity, item.UnitPrice);
 
-         _orderRepository.Add(order, cancellationToken);
+         _orderRepository.Add(order);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
