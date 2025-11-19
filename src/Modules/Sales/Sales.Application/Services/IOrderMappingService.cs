@@ -23,7 +23,7 @@ public class OrderMappingService : IOrderMappingService
             CreatedAt: order.CreatedAt,
             Items: [.. order.Items.Select(item => new OrderItemDto
             (
-                
+                Id : item.Id,
                 ProductName: item.ProductName,
                 Quantity: item.Quantity,
                 UnitPrice: item.UnitPrice

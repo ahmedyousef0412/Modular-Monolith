@@ -13,7 +13,9 @@ public static class SalesInfrastructureModule
     public static IServiceCollection AddSalesInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<SalesDbContext>(options =>
-           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+           sql => sql.MigrationsHistoryTable("__EFMigrationsHistory", "sales")));
+            
 
 
         services.AddScoped<IOrderRepository, OrderRepository>();
