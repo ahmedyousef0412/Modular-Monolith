@@ -22,6 +22,9 @@ public class SalesDbContext: DbContext
         modelBuilder.ApplyConfiguration(new OrderConfiguration());
         modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
 
+        modelBuilder.HasDefaultSchema("sales");
+
+
         base.OnModelCreating(modelBuilder);
     }
 }

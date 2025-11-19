@@ -21,7 +21,7 @@ public class ConfirmOrderCommandHandler : ICommandHandler<ConfirmOrderCommand, b
         var order = await _repository.GetByIdAsync(command.OrderId, cancellationToken)
            ?? throw new ArgumentException("Order not found");
 
-        order.MarkAsPaid();
+        order.Confirm();
 
         return await _unitOfWork.SaveEntitiesAsync(cancellationToken);
     }

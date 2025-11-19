@@ -57,6 +57,34 @@ public class Order : BaseEntity
         _items.Remove(item);
     }
 
+
+    public void UpdateItemQuantity(Guid orderItemId, int newQuantity)
+    {
+        EnsureDraft();
+
+        var item = _items.FirstOrDefault(i => i.Id == orderItemId)
+            ?? throw new DomainException("The order item does not exist.");
+
+        item.UpdateQuantity(newQuantity);
+
+
+    }
+
+    public void Confirm()
+    {
+        
+        if (Status != OrderStatus.Draft)
+            throw new DomainException("Only draft orders can be confirmed.");
+
+        
+        if (_items.Count == 0)
+            throw new DomainException("Cannot confirm an order with no items.");
+
+        Status = OrderStatus.PendingPayment;
+
+    }
+
+
     public void MarkAsPendingPayment()
     {
         EnsureDraft();

@@ -36,7 +36,7 @@ public class OrderItem : BaseEntity
     {
         if (quantity <= 0)
             throw new DomainException("Quantity must be greater than zero.");
-
+       
         Quantity = quantity;
     }
 
