@@ -12,8 +12,6 @@ public record CreateOrderCommand(
 
 // DTO for items
 public record OrderItemDto(
-    Guid Id,
-    string ProductName,
-    int Quantity,
-    decimal UnitPrice
+    Guid ProductId,
+    int Quantity
 );

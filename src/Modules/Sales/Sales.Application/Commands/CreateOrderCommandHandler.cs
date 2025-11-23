@@ -1,4 +1,5 @@
-﻿using Sales.Domain.Entity;
+﻿using Sales.Application.Ports;
+using Sales.Domain.Entity;
 using Sales.Domain.Repository;
 using SharedKernel.CQRS;
 using SharedKernel.Entities;
@@ -9,11 +10,13 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Gui
 {
 
     private readonly IOrderRepository _orderRepository;
+    private readonly IInventoryGateway _inventoryGateway;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork, IInventoryGateway inventoryGateway)
     {
         _orderRepository = orderRepository;
+        _inventoryGateway = inventoryGateway;
         _unitOfWork = unitOfWork;
     }
 
@@ -23,9 +26,17 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Gui
 
 
         foreach (var item in command.Items)
-            order.AddItem(item.ProductName, item.Quantity, item.UnitPrice);
+        {
+            ProductInfo? productInfo = await _inventoryGateway.GetProductInfoAsync(item.ProductId, cancellationToken)
+                
+                ?? throw new InvalidOperationException($"Product with ID {item.ProductId} not found.");
 
-         _orderRepository.Add(order);
+
+            order.AddItem(productInfo.Id, productInfo.Name, item.Quantity, productInfo.Price);
+        }
+
+
+        _orderRepository.Add(order);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

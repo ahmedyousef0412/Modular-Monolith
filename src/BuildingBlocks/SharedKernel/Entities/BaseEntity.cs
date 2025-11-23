@@ -19,6 +19,10 @@ public abstract class BaseEntity
 
         IsDeleted = true;
         DeletedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+
     }
+
+    //protected void AddDomainEvent(IDomainEvent ev) { }
 }
 //protected set Only this class & derived classe

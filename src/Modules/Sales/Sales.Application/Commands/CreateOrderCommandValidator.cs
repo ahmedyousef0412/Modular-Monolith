@@ -13,12 +13,10 @@ public class CreateOrderCommandValidator: AbstractValidator<CreateOrderCommand>
             .NotEmpty().WithMessage("At least one order item is required.");
         RuleForEach(x => x.Items).ChildRules(items =>
         {
-            items.RuleFor(i => i.ProductName)
-                .NotEmpty().WithMessage("ProductName is required.");
+           
             items.RuleFor(i => i.Quantity)
                 .GreaterThan(0).WithMessage("Quantity must be greater than zero.");
-            items.RuleFor(i => i.UnitPrice)
-                .GreaterThan(0).WithMessage("UnitPrice must be greater than zero.");
+          
         });
     }
 }

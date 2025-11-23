@@ -18,7 +18,7 @@ public static class SalesApplicationModule
 
         services.AddMediatR(cfg =>
         {
-            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            cfg.RegisterServicesFromAssembly(typeof(SalesApplicationModule).Assembly);
         });
 
         

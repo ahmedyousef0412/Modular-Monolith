@@ -12,6 +12,9 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
 
         builder.HasKey(i => i.Id);
 
+        builder.Property(i => i.ProductId)
+               .IsRequired();
+
         builder.Property(i => i.ProductName)
                .IsRequired()
                .HasMaxLength(250);

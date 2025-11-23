@@ -1,4 +1,5 @@
-﻿using Sales.Domain.Repository;
+﻿using Sales.Domain.Entity;
+using Sales.Domain.Repository;
 using SharedKernel.CQRS;
 using SharedKernel.Entities;
 using SharedKernel.Exceptions;
@@ -19,7 +20,7 @@ public class ConfirmOrderCommandHandler : ICommandHandler<ConfirmOrderCommand, b
     public async Task<bool> Handle(ConfirmOrderCommand command, CancellationToken cancellationToken)
     {
         var order = await _repository.GetByIdAsync(command.OrderId, cancellationToken)
-           ?? throw new ArgumentException("Order not found");
+           ?? throw new NotFoundException(nameof(Order), command.OrderId);
 
         order.Confirm();
 
