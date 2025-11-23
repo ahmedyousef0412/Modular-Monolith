@@ -1,6 +1,8 @@
-﻿using Sales.Domain.Repository;
+﻿using Sales.Domain.Entity;
+using Sales.Domain.Repository;
 using SharedKernel.CQRS;
 using SharedKernel.Entities;
+using SharedKernel.Exceptions;
 
 namespace Sales.Application.Commands;
 
@@ -17,9 +19,9 @@ public class AddOrderItemCommandHandler : ICommandHandler<AddOrderItemCommand>
     public async Task<Guid> Handle(AddOrderItemCommand command, CancellationToken cancellationToken)
     {
        var order = await _repository.GetByIdAsync(command.OrderId, cancellationToken)
-            ?? throw new ArgumentException($"Order with ID {command.OrderId} not found.");
+            ?? throw new NotFoundException(nameof(Order), command.OrderId);
 
-        order.AddItem(command.ProductName, command.Quantity, command.UnitPrice);
+        order.AddItem(command.ProductId,command.ProductName, command.Quantity, command.UnitPrice);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

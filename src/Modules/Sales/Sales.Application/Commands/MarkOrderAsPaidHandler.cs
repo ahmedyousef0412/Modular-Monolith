@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Sales.Domain.Entity;
 using Sales.Domain.Repository;
 using SharedKernel.CQRS;
 using SharedKernel.Entities;
+using SharedKernel.Exceptions;
 
 namespace Sales.Application.Commands;
 
@@ -19,7 +21,7 @@ public class MarkOrderAsPaidHandler : ICommandHandler<MarkOrderAsPaidCommand,boo
     public async Task<bool> Handle(MarkOrderAsPaidCommand command, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetByIdAsync(command.OrderId, cancellationToken) 
-            ?? throw new KeyNotFoundException($"Order {command.OrderId} not found.");
+            ?? throw new NotFoundException(nameof(Order), command.OrderId);
 
 
         order.MarkAsPaid();

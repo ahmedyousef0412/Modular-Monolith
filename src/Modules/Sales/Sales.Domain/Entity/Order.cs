@@ -33,7 +33,7 @@ public class Order : BaseEntity
         return new Order(customerId);
     }
 
-    public OrderItem AddItem(string productName, int quantity, decimal unitPrice)
+    public OrderItem AddItem(Guid productId, string productName, int quantity, decimal unitPrice)
     {
         EnsureDraft();
 
@@ -41,7 +41,7 @@ public class Order : BaseEntity
             throw new DomainException($"The product '{productName}' is already added to the order.");
 
 
-        var orderItem = OrderItem.Create(this.Id, productName, quantity, unitPrice);
+        var orderItem = OrderItem.Create(this.Id,productId, productName, quantity, unitPrice);
         _items.Add(orderItem);
 
         return orderItem;
