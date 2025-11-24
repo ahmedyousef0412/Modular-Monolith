@@ -10,9 +10,9 @@ namespace Sales.Application.Commands;
 public class MarkOrderAsPaidHandler : ICommandHandler<MarkOrderAsPaidCommand,bool>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISalesUnitOfWork _unitOfWork;
 
-    public MarkOrderAsPaidHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork)
+    public MarkOrderAsPaidHandler(IOrderRepository orderRepository, ISalesUnitOfWork unitOfWork)
     {
         _orderRepository = orderRepository;
         _unitOfWork = unitOfWork;

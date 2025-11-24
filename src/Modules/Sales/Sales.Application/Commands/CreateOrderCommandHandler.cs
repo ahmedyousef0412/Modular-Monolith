@@ -11,9 +11,9 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Gui
 
     private readonly IOrderRepository _orderRepository;
     private readonly IInventoryGateway _inventoryGateway;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISalesUnitOfWork _unitOfWork;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork, IInventoryGateway inventoryGateway)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, ISalesUnitOfWork unitOfWork, IInventoryGateway inventoryGateway)
     {
         _orderRepository = orderRepository;
         _inventoryGateway = inventoryGateway;

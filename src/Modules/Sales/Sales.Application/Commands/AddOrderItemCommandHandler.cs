@@ -9,9 +9,9 @@ namespace Sales.Application.Commands;
 public class AddOrderItemCommandHandler : ICommandHandler<AddOrderItemCommand>
 {
     private readonly IOrderRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISalesUnitOfWork _unitOfWork;
 
-    public AddOrderItemCommandHandler(IOrderRepository repository, IUnitOfWork unitOfWork)
+    public AddOrderItemCommandHandler(IOrderRepository repository, ISalesUnitOfWork unitOfWork)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;

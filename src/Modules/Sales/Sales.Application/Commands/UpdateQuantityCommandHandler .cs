@@ -10,9 +10,9 @@ public class UpdateQuantityCommandHandler : ICommandHandler<UpdateQuantityComman
 {
 
     private readonly IOrderRepository _orderRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISalesUnitOfWork _unitOfWork;
 
-    public UpdateQuantityCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork)
+    public UpdateQuantityCommandHandler(IOrderRepository orderRepository, ISalesUnitOfWork unitOfWork)
     {
         _orderRepository = orderRepository;
         _unitOfWork = unitOfWork;
