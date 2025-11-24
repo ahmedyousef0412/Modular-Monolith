@@ -10,9 +10,9 @@ namespace Sales.Application.Commands;
 public class ConfirmOrderCommandHandler : ICommandHandler<ConfirmOrderCommand, bool>
 {
     private readonly IOrderRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISalesUnitOfWork _unitOfWork;
 
-    public ConfirmOrderCommandHandler(IOrderRepository repository, IUnitOfWork unitOfWork)
+    public ConfirmOrderCommandHandler(IOrderRepository repository, ISalesUnitOfWork unitOfWork)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;

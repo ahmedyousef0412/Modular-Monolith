@@ -21,7 +21,7 @@ public static class SalesInfrastructureModule
 
         services.AddScoped<IInventoryGateway, InventoryGateway>();
         services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ISalesUnitOfWork, SalesUnitOfWork>();
 
         return services;
     }

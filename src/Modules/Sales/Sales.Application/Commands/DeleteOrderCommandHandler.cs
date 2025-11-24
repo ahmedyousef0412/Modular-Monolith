@@ -7,9 +7,9 @@ namespace Sales.Application.Commands;
 public class DeleteOrderCommandHandler : IResultCommandHandler<DeleteOrderCommand>
 {
     private readonly IOrderRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISalesUnitOfWork _unitOfWork;
 
-    public DeleteOrderCommandHandler(IOrderRepository repository, IUnitOfWork unitOfWork)
+    public DeleteOrderCommandHandler(IOrderRepository repository, ISalesUnitOfWork unitOfWork)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;

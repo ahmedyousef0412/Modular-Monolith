@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.Entities;
+﻿namespace SharedKernel.CQRS;
 
 public interface IUnitOfWork
 {
