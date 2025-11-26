@@ -1,26 +1,25 @@
-﻿using Inventory.Application.Queries.Product;
+﻿using Inventory.Application.Queries.ProductQueries;
 using Inventory.Domain.Entity;
 
 namespace Inventory.Application.Services;
 
 internal class InventoryMappingService : IInventoryMappingService
 {
-    public ProductDto MapToProductDto(Product product, List<StockItem> stockItems)
+    public ProductDto MapToProductDto(Product product, IReadOnlyList<StockItemDto> stockItems)
     {
-        var stockDtos = stockItems.Select(MapToStockItemDto).ToList();
-
         return new ProductDto(
             Id: product.Id,
             Name: product.Name,
             Sku: product.Sku,
             Description: product.Description,
-            Stock: stockDtos
+            Stock: [.. stockItems] 
         );
     }
 
     public StockItemDto MapToStockItemDto(StockItem stockItem)
     {
         return new StockItemDto(
+            Id: stockItem.Id,
             WarehouseId: stockItem.WarehouseId,
             Quantity: stockItem.Quantity,
             MinimumQuantity: stockItem.MinimumQuantity,

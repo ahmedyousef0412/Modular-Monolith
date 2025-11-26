@@ -67,4 +67,16 @@ public class StockItem : BaseEntity
         Quantity -= amount;
     }
 
+
+    public void UpdateThresholds(int newMin , int newMax)
+    {
+        if (newMin < 0)
+            throw new DomainException("Minimum quantity cannot be negative.");
+
+        if (newMax < newMin)
+            throw new DomainException("Maximum quantity cannot be less than minimum.");
+
+        MinimumQuantity = newMin;
+        MaximumQuantity = newMax;
+    }
 }

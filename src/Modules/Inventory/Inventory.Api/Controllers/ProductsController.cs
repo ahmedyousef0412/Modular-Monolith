@@ -1,5 +1,5 @@
 ﻿using Inventory.Application.Commands.ProductCommands;
-using Inventory.Application.Queries.Product;
+using Inventory.Application.Queries.ProductQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,7 +38,6 @@ public class ProductsController : Controller
     public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
     {
         Guid productId = await _mediator.Send(command);
-
         return CreatedAtAction(nameof(GetProductById), new { id = productId }, new { id = productId });
     }
 

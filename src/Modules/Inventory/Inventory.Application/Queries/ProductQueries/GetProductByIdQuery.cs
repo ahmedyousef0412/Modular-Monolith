@@ -2,7 +2,7 @@
 using SharedKernel.CQRS;
 
 
-namespace Inventory.Application.Queries.Product;
+namespace Inventory.Application.Queries.ProductQueries;
 
 public record GetProductByIdQuery(Guid ProductId) : IQuery<ProductDto>;
 
@@ -18,6 +18,7 @@ public record ProductDto(
 );
 
 public record StockItemDto(
+    Guid Id,
     Guid WarehouseId,
     int Quantity,
     int MinimumQuantity,
