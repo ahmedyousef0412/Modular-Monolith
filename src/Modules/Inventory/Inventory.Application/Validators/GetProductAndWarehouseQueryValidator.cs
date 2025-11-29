@@ -4,7 +4,7 @@ using Inventory.Application.Queries.StockItemQueries;
 
 namespace Inventory.Application.Validators;
 
-public class GetProductAndWarehouseQueryValidator:AbstractValidator<GetProductAndWarehouseQuery>
+public class GetProductAndWarehouseQueryValidator:AbstractValidator<GetStockProductAndWarehouseQuery>
 {
     public GetProductAndWarehouseQueryValidator()
     {

@@ -1,6 +1,7 @@
 using Inventory.Api;
 using Sales.Api;
 using SharedKernel.Middlewares;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,10 +19,15 @@ builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.UnmappedMemberHandling =
-            System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow;
+           JsonUnmappedMemberHandling.Disallow;
+
+
+        //JSON enums serialize as strings
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 #endregion
+
 
 
 var app = builder.Build();

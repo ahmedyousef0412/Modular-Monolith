@@ -1,5 +1,6 @@
 ﻿using Inventory.Application.Repository;
 using Inventory.Domain.Entity;
+using Inventory.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Repositories;
 
@@ -7,7 +8,7 @@ namespace Inventory.Infrastructure.Repositories;
 
 public  class ProductRepository :BaseRepository<Product> ,IProductRepository
 {
-    public ProductRepository(DbContext context) : base(context)
+    public ProductRepository(InventoryDbContext context) : base(context)
     {
     }
 

@@ -5,17 +5,17 @@ using SharedKernel.CQRS;
 
 namespace Inventory.Application.Queries.StockItemQueries;
 
-public class GetByProductIdsQueryHandler : IQueryHandler<GetByProductIdsQuery, IReadOnlyList<StockItemDto>>
+public class GetStockByProductIdsQueryHandler : IQueryHandler<GetStockByProductIdsQuery, IReadOnlyList<StockItemDto>>
 {
 
     private readonly IStockReadRepository _stockReadRepository;
 
-    public GetByProductIdsQueryHandler(IStockReadRepository stockReadRepository)
+    public GetStockByProductIdsQueryHandler(IStockReadRepository stockReadRepository)
     {
         _stockReadRepository = stockReadRepository;
     }
 
-    public async Task<IReadOnlyList<StockItemDto>> Handle(GetByProductIdsQuery query, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<StockItemDto>> Handle(GetStockByProductIdsQuery query, CancellationToken cancellationToken)
     {
         var stockItems = await _stockReadRepository.GetByProductIdsAndWarehouseAsync(query.ProductIds, query.WarehouseId, cancellationToken);
 

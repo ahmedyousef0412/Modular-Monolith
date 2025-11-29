@@ -8,12 +8,12 @@ using Inventory.Application.Queries.ProductQueries;
 
 namespace Inventory.Application.Queries.StockItemQueries;
 
-public class GetProductAndWarehouseQueryHandler(IStockReadRepository stockReadRepository) : IQueryHandler<GetProductAndWarehouseQuery, StockItemDto>
+public class GetStockProductAndWarehouseQueryHandler(IStockReadRepository stockReadRepository) : IQueryHandler<GetStockProductAndWarehouseQuery, StockItemDto>
 {
 
     private readonly IStockReadRepository _stockReadRepository = stockReadRepository;
 
-    public async Task<StockItemDto> Handle(GetProductAndWarehouseQuery query, CancellationToken cancellationToken)
+    public async Task<StockItemDto> Handle(GetStockProductAndWarehouseQuery query, CancellationToken cancellationToken)
     {
        var stockItemDto = await _stockReadRepository
             .GetByProductAndWarehouseAsync(query.ProductId, query.WarehouseId, cancellationToken);

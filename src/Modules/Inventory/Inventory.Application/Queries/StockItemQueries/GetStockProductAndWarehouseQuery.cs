@@ -4,6 +4,6 @@ using SharedKernel.CQRS;
 
 namespace Inventory.Application.Queries.StockItemQueries;
 
-public record GetProductAndWarehouseQuery(Guid ProductId, Guid WarehouseId) : IQuery<StockItemDto>;
+public record GetStockProductAndWarehouseQuery(Guid ProductId, Guid WarehouseId) : IQuery<StockItemDto>;
 
 

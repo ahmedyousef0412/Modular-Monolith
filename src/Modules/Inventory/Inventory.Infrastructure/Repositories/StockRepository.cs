@@ -1,5 +1,6 @@
 ﻿using Inventory.Application.Repository;
 using Inventory.Domain.Entity;
+using Inventory.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Repositories;
 
@@ -7,7 +8,7 @@ namespace Inventory.Infrastructure.Repositories;
 
 public class StockRepository : BaseRepository<StockItem>, IStockRepository
 {
-    public StockRepository(DbContext context) : base(context)
+    public StockRepository(InventoryDbContext context) : base(context)
     {
     }
 
