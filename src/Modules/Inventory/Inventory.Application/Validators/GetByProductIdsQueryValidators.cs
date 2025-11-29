@@ -3,7 +3,7 @@ using Inventory.Application.Queries.StockItemQueries;
 
 namespace Inventory.Application.Validators;
 
-public class GetByProductIdsQueryValidators : AbstractValidator<GetByProductIdsQuery>
+public class GetByProductIdsQueryValidators : AbstractValidator<GetStockByProductIdsQuery>
 {
     public GetByProductIdsQueryValidators()
     {

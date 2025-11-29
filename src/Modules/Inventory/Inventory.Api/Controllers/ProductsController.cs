@@ -8,7 +8,7 @@ namespace Inventory.Api.Controllers;
 
 [ApiController]
 [Route("api/inventory/products")]
-public class ProductsController : Controller
+public class ProductsController : ControllerBase
 {
 
     private readonly IMediator _mediator;
