@@ -21,6 +21,8 @@ public static class InventoryInfrastrucureModule
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IStockRepository, StockRepository>();
         services.AddScoped<IStockReadRepository, StockReadRepository>();
+        services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+        services.AddScoped<IWarehouseReadRepository, WarehouseReadRepository>();
 
 
         services.AddScoped<IInventoryUnitOfWork, InventoryUnitOfWork>();

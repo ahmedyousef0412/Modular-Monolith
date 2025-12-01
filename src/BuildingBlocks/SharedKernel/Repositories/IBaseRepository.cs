@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace SharedKernel.Repositories;
 
-public interface IRepository<T> where T : BaseEntity //later I will add IAggregateRoot
+public interface IBaseRepository<T> where T : BaseEntity //later I will add IAggregateRoot
 {
     Task<T?> GetByIdAsync(Guid id);
     Task<IEnumerable<T>> GetAllAsync();

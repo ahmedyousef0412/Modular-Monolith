@@ -32,5 +32,13 @@ public class StockItemConfiguration : IEntityTypeConfiguration<StockItem>
                .WithMany()
                .HasForeignKey(s => s.ProductId)
                .OnDelete(DeleteBehavior.Restrict); // Prevent deleting a Product if stock exists;
+
+
+
+        //Relationship with Warehouse
+        builder.HasOne<Warehouse>()
+            .WithMany()
+            .HasForeignKey(s => s.WarehouseId)
+            .OnDelete(DeleteBehavior.Restrict); //  Don't delete Warehouse if it has stock!
     }
 }

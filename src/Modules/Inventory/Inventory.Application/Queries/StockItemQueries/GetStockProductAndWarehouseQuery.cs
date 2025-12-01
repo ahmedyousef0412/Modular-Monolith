@@ -1,5 +1,5 @@
 
-using Inventory.Application.Queries.ProductQueries;
+using Inventory.Application.Dtos.StockItems;
 using SharedKernel.CQRS;
 
 namespace Inventory.Application.Queries.StockItemQueries;

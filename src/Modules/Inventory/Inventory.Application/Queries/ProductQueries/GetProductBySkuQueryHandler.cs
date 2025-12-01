@@ -1,4 +1,5 @@
-﻿using Inventory.Application.Repository;
+﻿using Inventory.Application.Dtos.Products;
+using Inventory.Application.Repository;
 using Inventory.Application.Services;
 using Inventory.Domain.Entity;
 using SharedKernel.CQRS;
