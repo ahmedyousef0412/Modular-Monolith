@@ -27,6 +27,8 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
+
+        // 1. Handle Auditing (Created/Updated)
         foreach (var entry in context.ChangeTracker.Entries<IAuditableEntity>())
         {
             if (entry.State == EntityState.Added)
@@ -37,6 +39,19 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
             {
                 // Set update time
                 entry.Entity.UpdatedAt = DateTime.UtcNow;
+            }
+        }
+
+        // 2. Handle Soft Delete
+        foreach (var entry in context.ChangeTracker.Entries<ISoftDeletable>())
+        {
+            
+            if (entry.State == EntityState.Deleted)
+            {
+                entry.State = EntityState.Modified;
+
+                entry.Entity.IsDeleted = true;
+                entry.Entity.DeletedAt = DateTime.UtcNow;
             }
         }
     }
