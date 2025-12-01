@@ -4,7 +4,7 @@
 namespace SharedKernel.Repositories;
 
 //public abstract class BaseRepository<T> where T : AggregateRoot
-public abstract class BaseRepository<T> where T : class
+public abstract class BaseRepository<T> where T :  class
 {
     protected readonly DbContext _context;
     protected readonly DbSet<T> _dbSet;

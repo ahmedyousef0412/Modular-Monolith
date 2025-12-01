@@ -1,14 +1,14 @@
-﻿using Inventory.Application.Repository;
-using SharedKernel.CQRS;
-using SharedKernel.Exceptions;
+﻿using Inventory.Application.Dtos.StockItems;
+using Inventory.Application.Repository;
 using Inventory.Domain.Entity;
-using Inventory.Application.Queries.ProductQueries;
+using SharedKernel.CQRS;
 
 
 
 namespace Inventory.Application.Queries.StockItemQueries;
 
-public class GetStockProductAndWarehouseQueryHandler(IStockReadRepository stockReadRepository) : IQueryHandler<GetStockProductAndWarehouseQuery, StockItemDto>
+public class GetStockProductAndWarehouseQueryHandler(IStockReadRepository stockReadRepository) 
+    : IQueryHandler<GetStockProductAndWarehouseQuery, StockItemDto>
 {
 
     private readonly IStockReadRepository _stockReadRepository = stockReadRepository;

@@ -10,6 +10,7 @@ public class InventoryDbContext : DbContext
 
     public DbSet<Product> Products { get; set; }
     public DbSet<StockItem> StockItems { get; set; }
+    public DbSet<Warehouse> Warehouses { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,4 +1,6 @@
-﻿using Inventory.Application.Queries.ProductQueries;
+﻿using Inventory.Application.Dtos.Products;
+using Inventory.Application.Dtos.StockItems;
+using Inventory.Application.Queries.ProductQueries;
 using Inventory.Domain.Entity;
 
 

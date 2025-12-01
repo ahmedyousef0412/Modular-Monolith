@@ -1,4 +1,4 @@
-﻿using Inventory.Application.Queries.ProductQueries;
+﻿using Inventory.Application.Dtos.StockItems;
 
 
 namespace Inventory.Application.Repository;

@@ -1,4 +1,5 @@
-﻿using Inventory.Application.Mappings;
+﻿using Inventory.Application.Dtos.StockItems;
+using Inventory.Application.Mappings;
 using Inventory.Application.Queries.ProductQueries;
 using Inventory.Application.Repository;
 using Inventory.Infrastructure.Persistence;

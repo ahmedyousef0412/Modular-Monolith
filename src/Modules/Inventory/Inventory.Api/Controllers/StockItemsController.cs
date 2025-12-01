@@ -1,4 +1,5 @@
 ﻿using Inventory.Application.Commands.StockItemCommands;
+using Inventory.Application.Dtos.StockItems;
 using Inventory.Application.Queries.ProductQueries;
 using Inventory.Application.Queries.StockItemQueries;
 using MediatR;
