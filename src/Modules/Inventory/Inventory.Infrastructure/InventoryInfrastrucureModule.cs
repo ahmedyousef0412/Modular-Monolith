@@ -5,6 +5,7 @@ using Inventory.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.Interceptors;
 
 
 namespace Inventory.Infrastructure;
@@ -14,9 +15,12 @@ public static class InventoryInfrastrucureModule
 
     public static IServiceCollection AddInventoryInfrastructure(this IServiceCollection services , IConfiguration configuration)
     {
-        services.AddDbContext<InventoryDbContext>(options =>
-           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-           sql => sql.MigrationsHistoryTable("__EFMigrationsHistory", "inventory")));
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+       
+        
+        services.AddSingleton<AuditableEntityInterceptor>();
+
+        
 
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IStockRepository, StockRepository>();
@@ -26,6 +30,21 @@ public static class InventoryInfrastrucureModule
 
 
         services.AddScoped<IInventoryUnitOfWork, InventoryUnitOfWork>();
+
+
+        services.AddDbContext<InventoryDbContext>((sp, options) =>
+        {
+            
+            var interceptor = sp.GetRequiredService<AuditableEntityInterceptor>();
+
+            
+            options.UseSqlServer(connectionString, sql =>
+            {
+               
+                sql.MigrationsHistoryTable("__EFMigrationsHistory", "inventory");
+            })
+            .AddInterceptors(interceptor);
+        });
 
         return services;
     }

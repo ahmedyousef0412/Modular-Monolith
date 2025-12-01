@@ -18,8 +18,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.Status)
                .IsRequired();
 
-        builder.Property(o => o.CreatedAt)
-               .HasDefaultValueSql("GETUTCDATE()");
+        builder.Property(p => p.CreatedAt)
+            .IsRequired();
+
+        builder.Property(p => p.UpdatedAt)
+            .IsRequired(false);
 
         // One-to-many with OrderItem
         builder.HasMany(o => o.Items)

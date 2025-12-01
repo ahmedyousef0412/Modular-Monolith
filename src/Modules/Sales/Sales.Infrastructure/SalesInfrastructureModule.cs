@@ -6,7 +6,7 @@ using Sales.Domain.Repository;
 using Sales.Infrastructure.Gateways;
 using Sales.Infrastructure.Persistence;
 using Sales.Infrastructure.Repositories;
-using SharedKernel.Entities;
+using SharedKernel.Interceptors;
 
 namespace Sales.Infrastructure;
 
@@ -14,14 +14,29 @@ public static class SalesInfrastructureModule
 {
     public static IServiceCollection AddSalesInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<SalesDbContext>(options =>
-           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-           sql => sql.MigrationsHistoryTable("__EFMigrationsHistory", "sales")));
 
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        
+        services.AddSingleton<AuditableEntityInterceptor>();
 
         services.AddScoped<IInventoryGateway, InventoryGateway>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ISalesUnitOfWork, SalesUnitOfWork>();
+
+
+        services.AddDbContext<SalesDbContext>((sp, options) =>
+        {
+        
+            var interceptor = sp.GetRequiredService<AuditableEntityInterceptor>();
+
+            options.UseSqlServer(connectionString, sql =>
+            {
+              
+                sql.MigrationsHistoryTable("__EFMigrationsHistory", "sales");
+            })
+                .AddInterceptors(interceptor);
+        });
 
         return services;
     }

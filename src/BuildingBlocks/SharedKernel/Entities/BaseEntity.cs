@@ -1,13 +1,14 @@
-﻿namespace SharedKernel.Entities;
+﻿using SharedKernel.Interfaces;
 
-public abstract class BaseEntity
+namespace SharedKernel.Entities;
+
+public abstract class BaseEntity:IAuditableEntity
 {
 
     public Guid Id { get; protected set; } = Guid.NewGuid();
 
-    public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
-
-    public DateTime? UpdatedAt { get; protected set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public bool IsDeleted { get; protected set; } = false;
 

@@ -37,6 +37,17 @@ public class OrderItem : BaseEntity
         Quantity = quantity;
         UnitPrice = unitPrice;
     }
+    public static OrderItem Create(Guid orderId, Guid productId, string productName, int quantity, decimal unitPrice)
+    {
+
+        if (quantity <= 0)
+            throw new DomainException("Quantity must be greater than zero.");
+
+        if (unitPrice < 0)
+            throw new DomainException("Unit price cannot be negative.");
+
+        return new OrderItem(orderId,productId,productName, quantity, unitPrice);
+    }
 
     public void UpdateQuantity(int quantity)
     {
@@ -54,15 +65,4 @@ public class OrderItem : BaseEntity
         UnitPrice = unitPrice;
     }
 
-    public static OrderItem Create(Guid orderId, Guid productId, string productName, int quantity, decimal unitPrice)
-    {
-
-        if (quantity <= 0)
-            throw new DomainException("Quantity must be greater than zero.");
-
-        if (unitPrice < 0)
-            throw new DomainException("Unit price cannot be negative.");
-
-        return new OrderItem(orderId,productId,productName, quantity, unitPrice);
-    }
 }
