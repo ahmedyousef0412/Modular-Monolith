@@ -2,25 +2,25 @@
 
 namespace SharedKernel.Entities;
 
-public abstract class BaseEntity:IAuditableEntity
+public abstract class BaseEntity:IAuditableEntity,ISoftDeletable
 {
 
     public Guid Id { get; protected set; } = Guid.NewGuid();
 
+
+    // Auditing
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
-    public bool IsDeleted { get; protected set; } = false;
-
-    public DateTime? DeletedAt { get; protected set; }
+    // Soft Delete
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAt { get; set; }
 
     public void SoftDelete()
     {
         if (IsDeleted) return;
 
         IsDeleted = true;
-        DeletedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
 
     }
 
