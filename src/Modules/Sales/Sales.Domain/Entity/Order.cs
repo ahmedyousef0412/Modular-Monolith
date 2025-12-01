@@ -22,8 +22,7 @@ public class Order : BaseEntity
             throw new DomainException("CustomerId is required.");
 
         CustomerId = customerId;
-        Status = OrderStatus.Draft;
-        CreatedAt = DateTime.UtcNow;
+        Status = OrderStatus.Draft; 
     }
 
 

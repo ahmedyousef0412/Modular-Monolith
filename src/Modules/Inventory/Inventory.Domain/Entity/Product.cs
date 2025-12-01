@@ -31,8 +31,7 @@ public class Product : BaseEntity
             Name = name,
             Sku = sku,
             Description = description,
-            Price = price,
-            CreatedAt = DateTime.UtcNow,
+            Price = price
         };
     }
 
@@ -44,18 +43,10 @@ public class Product : BaseEntity
         Name = name;
         Description = description;
         Price = price;
-        UpdatedAt = DateTime.UtcNow;
     }
 
-    public void DeactiveProduct()
-    {
-        IsDeleted = true;
-        UpdatedAt = DateTime.UtcNow;
-    }
-
-    public void ActivateProduct()
-    {
-        IsDeleted = false;
-        UpdatedAt = DateTime.UtcNow;
-    }
+    public void DeactiveProduct() => IsDeleted = true;
+  
+    public void ActivateProduct() => IsDeleted = false;
+    
 }

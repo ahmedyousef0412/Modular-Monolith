@@ -28,8 +28,7 @@ public class Warehouse : BaseEntity
             Id = Guid.NewGuid(),
             Name = name,
             Location = location,
-            IsActive = true, // Active by default
-            CreatedAt = DateTime.Now,
+            IsActive = true // Active by default
         };
     }
 
