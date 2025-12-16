@@ -3,7 +3,7 @@ using SharedKernel.Exceptions;
 using System.Net.Mail;
 
 
-namespace Identity.Domain.Entity;
+namespace Identity.Domain.ValueObjects;
 
 public sealed class Email
 {
