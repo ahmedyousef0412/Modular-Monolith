@@ -1,4 +1,6 @@
-﻿using Inventory.Application.Services;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Inventory.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 namespace Inventory.Application;
 
@@ -15,6 +17,9 @@ public static class InventoryApplicationModule
         {
             cfg.RegisterServicesFromAssembly(typeof(InventoryApplicationModule).Assembly);
         });
+
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssembly(typeof(InventoryApplicationModule).Assembly);
 
         return services;
     }

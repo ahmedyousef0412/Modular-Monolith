@@ -1,9 +1,6 @@
 ﻿using SharedKernel.Common;
 using SharedKernel.Entities;
 using SharedKernel.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Identity.Domain.Entity;
 

@@ -17,5 +17,20 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .HasMaxLength(100);
 
         builder.HasIndex(r => r.Name).IsUnique();
+
+        //  OWNED permissions
+        builder.OwnsMany(r => r.Permissions, p =>
+        {
+            p.ToTable("RolePermissions");
+
+            p.WithOwner().HasForeignKey("RoleId");
+
+            // Natural key
+            p.HasKey("RoleId", "PermissionCode");
+
+            p.Property(x => x.PermissionCode)
+             .HasMaxLength(100)
+             .IsRequired();
+        });
     }
 }
