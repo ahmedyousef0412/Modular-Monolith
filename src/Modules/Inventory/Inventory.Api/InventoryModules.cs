@@ -1,7 +1,5 @@
 ﻿using Inventory.Application;
 using Inventory.Infrastructure;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 
 namespace Inventory.Api;
 
@@ -11,8 +9,7 @@ public static class InventoryModules
     {
         services.AddInventoryInfrastructure(configuration);
         services.AddInventoryApplication();
-        services.AddFluentValidationAutoValidation();
-        services.AddValidatorsFromAssembly(typeof(IInventoryApplicationMarker).Assembly);
+    
         return services;
     }
 }

@@ -1,3 +1,4 @@
+using Identity.Api;
 using Inventory.Api;
 using Sales.Api;
 using SharedKernel.Middlewares;
@@ -12,10 +13,12 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddSalesModules(builder.Configuration);
 builder.Services.AddInventoryModules(builder.Configuration);
+builder.Services.AddIdentityModule(builder.Configuration);
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(SalesModules).Assembly)
     .AddApplicationPart(typeof(InventoryModules).Assembly)
+    .AddApplicationPart(typeof(IdentityModule).Assembly)
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.UnmappedMemberHandling =
