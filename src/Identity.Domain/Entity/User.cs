@@ -1,4 +1,5 @@
-﻿using SharedKernel.Common;
+﻿using Identity.Domain.ValueObjects;
+using SharedKernel.Common;
 using SharedKernel.Entities;
 using SharedKernel.Exceptions;
 

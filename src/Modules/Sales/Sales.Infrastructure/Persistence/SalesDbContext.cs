@@ -15,8 +15,8 @@ public class SalesDbContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new OrderConfiguration());
-        modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+      
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SalesDbContext).Assembly);
 
         modelBuilder.HasDefaultSchema("sales");
 
