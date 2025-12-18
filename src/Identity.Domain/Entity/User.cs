@@ -74,14 +74,16 @@ public class User : BaseEntity
     }
 
 
-    public void AssignRole(Guid roleId)
+    public void AssignRole(Role role)
     {
-        if(_userRoles.Any(ur => ur.RoleId == roleId))
-        {
-            throw new DomainException("User already has this role assigned.");
-        }
+        Guard.AgainstNullOrEmpty(role, nameof(role));
 
-        _userRoles.Add(new UserRole(this.Id, roleId));
+        if (_userRoles.Any(ur => ur.RoleId == role.Id))
+            throw new DomainException("User already has this role assigned.");
+
+        var userRole = UserRole.Create(this, role);
+
+        _userRoles.Add(userRole);
     }
 
     public void RemoveRole(Guid roleId)
@@ -96,7 +98,7 @@ public class User : BaseEntity
 
     public RefreshToken AddRefreshToken(string token, DateTime expiresAt)
     {
-        var refreshToken = new RefreshToken(token, expiresAt);
+        var refreshToken = new RefreshToken(token, expiresAt,this.Id);
         _refreshTokens.Add(refreshToken);
         return refreshToken;
     }

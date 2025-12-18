@@ -1,4 +1,4 @@
-﻿namespace Identity.Domain.Security;
+﻿namespace Identity.Application.Abstractions;
 
 public interface IPasswordHasher
 {
