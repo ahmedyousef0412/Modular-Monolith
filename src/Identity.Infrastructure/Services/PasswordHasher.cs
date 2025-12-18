@@ -1,6 +1,8 @@
-﻿using Identity.Domain.Security;
+﻿
 
-namespace Identity.Infrastructure.Security;
+using Identity.Application.Abstractions;
+
+namespace Identity.Infrastructure.Services;
 
 public class PasswordHasher : IPasswordHasher
 {

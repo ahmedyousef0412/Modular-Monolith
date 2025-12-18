@@ -1,7 +1,11 @@
 using Identity.Api;
+using Identity.Infrastructure.Authentication;
 using Inventory.Api;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Sales.Api;
 using SharedKernel.Middlewares;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,13 +25,45 @@ builder.Services.AddControllers()
     .AddApplicationPart(typeof(IdentityModule).Assembly)
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.UnmappedMemberHandling =
-           JsonUnmappedMemberHandling.Disallow;
+        options.JsonSerializerOptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
 
 
         //JSON enums serialize as strings
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+
+#endregion
+
+
+#region Configure Jwt Authentication
+
+var jwtSettings = builder.Configuration
+    .GetSection(JwtSettings.SectionName)
+    .Get<JwtSettings>() 
+    ?? throw new InvalidOperationException("JwtSettings section is missing in appsettings.json");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(o =>
+{
+    o.SaveToken = true;
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidIssuer = jwtSettings.Issuer,
+        ValidAudience = jwtSettings.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+
+    };
+});
+
+
 
 #endregion
 

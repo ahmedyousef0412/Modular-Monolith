@@ -22,8 +22,9 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Users
-            .Include(u =>u.UserRoles)
-            .Include(u =>u.RefreshTokens)
+            .Include(u => u.UserRoles)
+             .ThenInclude(ur => ur.Role.Name)
+            .Include(u => u.RefreshTokens)
             .SingleOrDefaultAsync(u => u.Email.Value == email, cancellationToken);
     }
 
@@ -31,6 +32,7 @@ public class UserRepository : IUserRepository
     {
         return await _dbContext.Users
                     .Include(x => x.UserRoles)
+                      .ThenInclude(ur => ur.Role.Name)
                     .Include(x => x.RefreshTokens)
                     .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }

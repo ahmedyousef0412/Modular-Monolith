@@ -31,7 +31,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
 
 
-        // ✅ OWNED RefreshTokens
+        //  OWNED RefreshTokens
         builder.OwnsMany(u => u.RefreshTokens, rt =>
         {
             rt.ToTable("RefreshTokens");

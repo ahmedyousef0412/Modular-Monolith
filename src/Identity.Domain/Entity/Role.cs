@@ -14,7 +14,7 @@ public class Role : BaseEntity
     private readonly List<RolePermission> _permissions = [];
     public IReadOnlyCollection<RolePermission> Permissions => _permissions.AsReadOnly();
 
-
+    private readonly List<UserRole> _userRoles = [];
     private Role(string name, string description = "")
     {
         

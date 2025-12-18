@@ -10,4 +10,12 @@ public static class Guard
             throw new ArgumentException($"'{name}' is required.", name);
         }
     }
+
+    public static void AgainstNullOrEmpty<T>(T obj, string name) where T : class
+    {
+        if (obj == null)
+        {
+            throw new ArgumentNullException(name, $"'{name}' is required.");
+        }
+    }
 }

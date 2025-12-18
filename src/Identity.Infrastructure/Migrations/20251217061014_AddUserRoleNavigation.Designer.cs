@@ -4,6 +4,7 @@ using Identity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    partial class IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251217061014_AddUserRoleNavigation")]
+    partial class AddUserRoleNavigation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,11 +154,17 @@ namespace Identity.Infrastructure.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<DateTime>("CreatedOn")
+                            b1.Property<DateTime>("CreatedAt")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("DeletedAt")
                                 .HasColumnType("datetime2");
 
                             b1.Property<DateTime>("ExpiresOn")
                                 .HasColumnType("datetime2");
+
+                            b1.Property<bool>("IsDeleted")
+                                .HasColumnType("bit");
 
                             b1.Property<string>("ReasonRevoked")
                                 .HasColumnType("nvarchar(max)");
@@ -166,6 +175,9 @@ namespace Identity.Infrastructure.Migrations
                             b1.Property<string>("Token")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime?>("UpdatedAt")
+                                .HasColumnType("datetime2");
 
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");

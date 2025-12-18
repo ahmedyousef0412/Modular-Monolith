@@ -1,12 +1,13 @@
 ﻿using Identity.Domain.Repositories;
-using Identity.Domain.Security;
 using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Repositories;
-using Identity.Infrastructure.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Interceptors;
 using Microsoft.EntityFrameworkCore;
+using Identity.Infrastructure.Services;
+using Identity.Application.Abstractions;
+using Identity.Infrastructure.Authentication;
 
 namespace Identity.Infrastructure;
 
@@ -21,10 +22,18 @@ public static class IdentityInfrastructureModule
         services.AddSingleton<AuditableEntityInterceptor>();
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<IJwtProvider, JwtProvider>();
+
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+
         services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
 
 
+        services.AddOptions<JwtSettings>()
+            .BindConfiguration(JwtSettings.SectionName)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
 
         services.AddDbContext<IdentityDbContext>((sp, options) =>
