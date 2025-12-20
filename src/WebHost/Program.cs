@@ -1,5 +1,8 @@
 using Identity.Api;
+using Identity.Application.Abstractions;
 using Identity.Infrastructure.Authentication;
+using Identity.Infrastructure.Persistence;
+using Identity.Infrastructure.Seeders;
 using Inventory.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -81,6 +84,21 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.MapControllers();
+
+#region Seeding Default Data
+
+using var scope = app.Services.CreateScope();
+
+var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+
+var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+
+await DataSeeder.SeedAsync(dbContext, passwordHasher);
+
+#endregion
+
+
+
 
 app.Run();
 
