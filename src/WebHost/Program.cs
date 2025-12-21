@@ -1,6 +1,6 @@
 using Identity.Api;
 using Identity.Application.Abstractions;
-using Identity.Infrastructure.Authentication;
+using Identity.Application.Authentication;
 using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Seeders;
 using Inventory.Api;

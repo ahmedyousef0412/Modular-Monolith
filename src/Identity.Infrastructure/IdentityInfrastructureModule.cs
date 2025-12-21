@@ -7,7 +7,7 @@ using SharedKernel.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Identity.Infrastructure.Services;
 using Identity.Application.Abstractions;
-using Identity.Infrastructure.Authentication;
+using Identity.Application.Authentication;
 
 namespace Identity.Infrastructure;
 
@@ -22,7 +22,8 @@ public static class IdentityInfrastructureModule
         services.AddSingleton<AuditableEntityInterceptor>();
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
-        services.AddSingleton<IJwtProvider, JwtProvider>();
+        services.AddSingleton<ITokenProvider, TokenProvider>();
+        services.AddSingleton<IRefreshTokenLifetimeProvider, RefreshTokenLifetimeProvider>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();

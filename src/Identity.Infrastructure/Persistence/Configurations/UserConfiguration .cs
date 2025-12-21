@@ -31,14 +31,22 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
 
 
-        //  OWNED RefreshTokens
+        
         builder.OwnsMany(u => u.RefreshTokens, rt =>
         {
             rt.ToTable("RefreshTokens");
 
             rt.WithOwner().HasForeignKey("UserId");
 
+
+            #region Problom that I faced
+
+            //rt.HasKey("Id"); // Shadow property as primary key and this is int not Guid
+
+            rt.Property<Guid>("Id");
             rt.HasKey("Id");
+
+            #endregion
 
             rt.Property(x => x.Token)
               .IsRequired();
@@ -53,8 +61,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
     }
 }
-
-
 
 
 #region Explanation for Email Value Object Configuration

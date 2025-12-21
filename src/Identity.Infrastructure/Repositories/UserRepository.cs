@@ -1,5 +1,6 @@
 ﻿using Identity.Domain.Entity;
 using Identity.Domain.Repositories;
+using Identity.Domain.ValueObjects;
 using Identity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,26 +20,26 @@ public class UserRepository : IUserRepository
        await _dbContext.Users.AddAsync(user, cancellationToken);
     }
 
-    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Users
             .Include(u => u.UserRoles)
-             .ThenInclude(ur => ur.Role.Name)
+             .ThenInclude(ur => ur.Role)
             .Include(u => u.RefreshTokens)
-            .SingleOrDefaultAsync(u => u.Email.Value == email, cancellationToken);
+            .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Users
                     .Include(x => x.UserRoles)
-                      .ThenInclude(ur => ur.Role.Name)
+                      .ThenInclude(ur => ur.Role)
                     .Include(x => x.RefreshTokens)
                     .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<bool> IsEmailUniqueAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default)
     {
-        return !await _dbContext.Users.AnyAsync(x => x.Email.Value == email, cancellationToken);
+        return !await _dbContext.Users.AnyAsync(x => x.Email== email, cancellationToken);
     }
 }

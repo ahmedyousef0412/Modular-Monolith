@@ -39,9 +39,15 @@ public class DataSeeder
 
         var allPermissions = Permissions.GetAllPermissions();
 
+
+        var existingPermissions = adminRole.Permissions
+                        .Select(p => p.PermissionCode)
+                        .ToHashSet();
+
         foreach (var permission in allPermissions)
         {
-            adminRole.AddPermission(permission);
+            if(!existingPermissions.Contains(permission))
+                adminRole.AddPermission(permission);
         }
 
         await context.SaveChangesAsync();

@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Identity.Domain.Entity;
+﻿namespace Identity.Domain.Entity;
 
 
-[Owned]
 public class RefreshToken 
 {
     public Guid UserId { get; private set; }
@@ -26,7 +23,7 @@ public class RefreshToken
         Token = token;
         ExpiresOn = expiresOn;
         UserId = userId;
-        CreatedOn = DateTime.UtcNow; // Set once, never change
+        CreatedOn = DateTime.UtcNow; 
     }
 
     // Methods
