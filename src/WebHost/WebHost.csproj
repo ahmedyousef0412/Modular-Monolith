@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BuildingBlocks\SharedKernel\SharedKernel.csproj" />
-    <ProjectReference Include="..\Identity.Api\Identity.Api.csproj" />
+    <ProjectReference Include="..\Modules\Identity\Identity.Api\Identity.Api.csproj" />
     <ProjectReference Include="..\Modules\Inventory\Inventory.Api\Inventory.Api.csproj" />
     <ProjectReference Include="..\Modules\Sales\Sales.Api\Sales.Api.csproj" />
   </ItemGroup>
