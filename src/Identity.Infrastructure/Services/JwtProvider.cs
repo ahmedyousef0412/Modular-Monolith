@@ -1,5 +1,5 @@
 ﻿using Identity.Application.Abstractions;
-using Identity.Infrastructure.Authentication;
+using Identity.Application.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,17 +8,17 @@ using System.Security.Cryptography;
 
 namespace Identity.Infrastructure.Services;
 
-public class JwtProvider(IOptions<JwtSettings> jwtSettings) : IJwtProvider
+public class TokenProvider(IOptions<JwtSettings> jwtSettings) : ITokenProvider
 {
     private readonly JwtSettings _jwtSettings = jwtSettings.Value;
 
     public string GenerateAccessToken(IEnumerable<Claim> claims)
     {
-        // Create the Key(Infrastructure responsibility)
+       
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        // Create the Token
+   
         var token = new JwtSecurityToken
         (
 
@@ -29,7 +29,7 @@ public class JwtProvider(IOptions<JwtSettings> jwtSettings) : IJwtProvider
             signingCredentials: creds
         );
 
-        // Write as string
+       
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 

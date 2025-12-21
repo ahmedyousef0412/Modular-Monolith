@@ -22,6 +22,7 @@ public class User : BaseEntity
     private readonly List<RefreshToken> _refreshTokens = [];
     public IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens.AsReadOnly();
 
+    private const int MaxRefreshTokens = 3;
     private User() { }
 
 
@@ -95,12 +96,37 @@ public class User : BaseEntity
         }
     }
 
-
-    public RefreshToken AddRefreshToken(string token, DateTime expiresAt)
+    public void AddSession(string token, DateTime expiresAt)
     {
-        var refreshToken = new RefreshToken(token, expiresAt,this.Id);
+        var expiredTokens = _refreshTokens
+            .Where(t => t.IsExpired || !t.IsActive)
+            .ToList();
+
+        foreach (var expiredToken in expiredTokens)
+        {
+            _refreshTokens.Remove(expiredToken);
+        }
+
+
+        var activeTokens = _refreshTokens
+            .Where(t => t.IsActive)
+            .ToList();
+
+
+        if (activeTokens.Count >= MaxRefreshTokens)
+        {
+            var oldestToken = activeTokens
+                .OrderBy(t => t.CreatedOn)
+                .First();
+
+            _refreshTokens.Remove(oldestToken);
+            //oldestToken.Revoke("Maximum number of active refresh tokens exceeded.");
+        }
+
+
+        var refreshToken = new RefreshToken(token, expiresAt,this.Id); 
         _refreshTokens.Add(refreshToken);
-        return refreshToken;
+     
     }
 
     public void RevokeRefreshToken(string token, string reason)

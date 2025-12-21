@@ -1,4 +1,5 @@
 ﻿using Identity.Domain.Entity;
+using Identity.Domain.ValueObjects;
 
 namespace Identity.Domain.Repositories;
 
@@ -9,10 +10,10 @@ public interface IUserRepository
 
     Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+    Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default);
 
     
     // Useful to check uniqueness without loading the heavy object
-    Task<bool> IsEmailUniqueAsync(string email, CancellationToken cancellationToken = default);
+    Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default);
 
 }

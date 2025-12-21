@@ -1,4 +1,5 @@
-﻿using Identity.Infrastructure;
+﻿using Identity.Application;
+using Identity.Infrastructure;
 
 namespace Identity.Api;
 
@@ -8,6 +9,7 @@ public static class IdentityModule
     {
 
         services.AddIdentityInfrastructure(configuration);
+        services.AddIdentityApplication();
 
         return services;
     }

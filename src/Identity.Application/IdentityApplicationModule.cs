@@ -1,9 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Identity.Application.Abstractions;
+using Identity.Application.Authentication;
+using Microsoft.Extensions.DependencyInjection;
 namespace Identity.Application;
 
-internal class IdentityApplicationModule
+public static class IdentityApplicationModule
 {
+
+    public static IServiceCollection AddIdentityApplication(this IServiceCollection services)
+    {
+
+
+        services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
+
+
+        // Register MediatR
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(IdentityApplicationModule).Assembly);
+        });
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssembly(typeof(IdentityApplicationModule).Assembly);
+        return services;
+    }
 }

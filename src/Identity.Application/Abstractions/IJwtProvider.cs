@@ -1,8 +1,9 @@
-﻿using System.Security.Claims;
+﻿using Identity.Domain.Entity;
+using System.Security.Claims;
 
 namespace Identity.Application.Abstractions;
 
-public interface IJwtProvider
+public interface ITokenProvider
 {
 
     //(string Token,int ExpiresIn) GenerateToken(User user);
