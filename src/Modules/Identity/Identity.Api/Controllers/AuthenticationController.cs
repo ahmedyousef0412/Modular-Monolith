@@ -1,4 +1,8 @@
-﻿using Identity.Application.Authentication.Commands.Login;
+﻿using Identity.Application.Authentication.Commands.ForgotPassword;
+using Identity.Application.Authentication.Commands.Login;
+using Identity.Application.Authentication.Commands.RefreshToken;
+using Identity.Application.Authentication.Commands.ResetPassword;
+using Identity.Application.Authentication.Commands.RevokeToken;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,25 +11,48 @@ namespace Identity.Api.Controllers;
 
 [ApiController]
 [Route("api/identity/auth")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IMediator mediator) : ControllerBase
 {
-
-    private readonly IMediator _mediator;
-
-    public AuthenticationController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginCommand command )
     {
-        var result = await _mediator.Send(command);
+        var result = await mediator.Send(command);
         return Ok(result);
     }
 
-    //Refresh , Revoke , Reset Password ,Forgot Password 
+
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RevokeToken([FromBody] RefreshTokenCommand command)
+    {
+        var result = await mediator.Send(command);   
+        return Ok(result);
+    }
+
+
+    [HttpPost("revoke")] 
+    public async Task<IActionResult> Revoke([FromBody] RevokeTokenCommand command)
+    {
+        await mediator.Send(command);
+        return NoContent();
+    }
+
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+    {
+        var result = await mediator.Send(command);
+        return Ok(result);
+    }
+
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+    {
+        var result = await mediator.Send(command);
+        return Ok(result);
+    }
+    
 }
 
 //Why forgot-password is here:

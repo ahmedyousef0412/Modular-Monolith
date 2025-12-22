@@ -38,6 +38,15 @@ public class UserRepository : IUserRepository
                     .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<User> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Users
+            .Include(u => u.UserRoles)
+             .ThenInclude(ur => ur.Role)
+            .Include(u => u.RefreshTokens)
+            .SingleOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == refreshToken), cancellationToken);
+    }
+
     public async Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default)
     {
         return !await _dbContext.Users.AnyAsync(x => x.Email== email, cancellationToken);
