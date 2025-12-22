@@ -1,4 +1,5 @@
-﻿using Identity.Domain.ValueObjects;
+﻿using Identity.Domain.Exceptions;
+using Identity.Domain.ValueObjects;
 using SharedKernel.Common;
 using SharedKernel.Entities;
 using SharedKernel.Exceptions;
@@ -16,13 +17,16 @@ public class User : BaseEntity
     public string PasswordHash { get; private set; }
     public bool IsActive { get; private set; }
 
+    public string? PasswordResetToken { get; private set; }
+    public DateTime? PasswordResetTokenExpiresOn { get; private set; }
+
     private readonly List<UserRole> _userRoles = [];
     public IReadOnlyCollection<UserRole> UserRoles => _userRoles.AsReadOnly();
 
     private readonly List<RefreshToken> _refreshTokens = [];
     public IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens.AsReadOnly();
 
-    private const int MaxRefreshTokens = 3;
+    private const int MaxRefreshTokens = 5;
     private User() { }
 
 
@@ -75,6 +79,28 @@ public class User : BaseEntity
     }
 
 
+    public void RequestPasswordReset(string token ,DateTime expiresOn)
+    {
+        if (!IsActive)
+            throw new AccountLockedException(Email.Value);
+
+
+        PasswordResetToken = token;
+        PasswordResetTokenExpiresOn = expiresOn;
+    }
+
+    public bool VerifyResetToken(string token)
+    {
+        return PasswordResetToken == token &&
+               PasswordResetTokenExpiresOn.HasValue &&
+               PasswordResetTokenExpiresOn.Value > DateTime.UtcNow;
+    }
+    public void CompletePasswordReset()
+    {
+        PasswordResetToken = null;
+        PasswordResetTokenExpiresOn = null;
+    }
+
     public void AssignRole(Role role)
     {
         Guard.AgainstNullOrEmpty(role, nameof(role));
@@ -98,6 +124,8 @@ public class User : BaseEntity
 
     public void AddSession(string token, DateTime expiresAt)
     {
+
+        // Clean up expired or inactive tokens
         var expiredTokens = _refreshTokens
             .Where(t => t.IsExpired || !t.IsActive)
             .ToList();
@@ -108,22 +136,24 @@ public class User : BaseEntity
         }
 
 
+        // Enforce maximum number of active refresh tokens
         var activeTokens = _refreshTokens
             .Where(t => t.IsActive)
             .ToList();
 
 
+        // get oldest active token and revoke it
         if (activeTokens.Count >= MaxRefreshTokens)
         {
             var oldestToken = activeTokens
                 .OrderBy(t => t.CreatedOn)
                 .First();
 
-            _refreshTokens.Remove(oldestToken);
-            //oldestToken.Revoke("Maximum number of active refresh tokens exceeded.");
+            oldestToken.Revoke("Maximum number of active refresh tokens exceeded.");
         }
 
 
+        // Add the new refresh token
         var refreshToken = new RefreshToken(token, expiresAt,this.Id); 
         _refreshTokens.Add(refreshToken);
      
@@ -131,7 +161,8 @@ public class User : BaseEntity
 
     public void RevokeRefreshToken(string token, string reason)
     {
-        var refreshToken = _refreshTokens.SingleOrDefault(t => t.Token == token && t.IsActive) 
+        var refreshToken = _refreshTokens
+            .SingleOrDefault(t => t.Token == token && t.IsActive) 
             ?? throw new DomainException("Refresh token not found or already revoked.");
 
 
@@ -146,6 +177,23 @@ public class User : BaseEntity
         foreach (var token in _refreshTokens.Where(t => t.IsActive))
             token.Revoke(reason);
     }
+
+
+    public void RotateRefreshToken(string oldToken, string newToken, DateTime expiresAt)
+    {
+        var tokenToRotate = _refreshTokens.Single(t => t.Token == oldToken);
+           
+        if (tokenToRotate is null)
+        {
+            AddSession(newToken, expiresAt);
+            return;
+        }
+
+        tokenToRotate.Revoke("Replaced by new token.");
+
+        this.AddSession(newToken,expiresAt);
+    }
+
 
     public void Deactivate() => IsActive = false;
 

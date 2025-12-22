@@ -16,4 +16,7 @@ public interface IUserRepository
     // Useful to check uniqueness without loading the heavy object
     Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default);
 
+
+    Task<User> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
+
 }

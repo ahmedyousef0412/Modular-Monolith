@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\Commands\ForgotPassword\" />
-    <Folder Include="Authentication\Commands\ResetPassword\" />
-    <Folder Include="Authentication\Commands\RevokeToken\" />
-    <Folder Include="Authentication\Commands\RefreshToken\" />
     <Folder Include="Roles\Commands\CreateRole\" />
     <Folder Include="Roles\Commands\AssignRole\" />
     <Folder Include="Roles\Queries\GetRoles\" />
