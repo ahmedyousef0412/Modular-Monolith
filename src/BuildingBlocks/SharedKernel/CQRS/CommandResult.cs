@@ -1,6 +1,6 @@
 ﻿namespace SharedKernel.CQRS;
 
-public sealed class CommandResult
+public  class CommandResult
 {
     public bool IsSucess { get; private set; }
 
@@ -29,4 +29,6 @@ public sealed class CommandResult
             Errors = errors
         };
     }
+
+
 }

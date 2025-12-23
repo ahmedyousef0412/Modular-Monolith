@@ -1,9 +1,10 @@
-﻿using Identity.Domain.Entity;
+﻿using Identity.Application.Abstractions;
+using Identity.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Persistence;
 
-public class IdentityDbContext: DbContext
+public class IdentityDbContext: DbContext,IIdentityDbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }

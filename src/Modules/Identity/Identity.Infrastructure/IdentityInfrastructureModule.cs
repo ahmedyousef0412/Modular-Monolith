@@ -28,6 +28,7 @@ public static class IdentityInfrastructureModule
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
 
+        services.AddScoped<IIdentityDbContext, IdentityDbContext>();
         services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
 
 

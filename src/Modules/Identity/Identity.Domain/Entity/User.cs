@@ -8,9 +8,9 @@ namespace Identity.Domain.Entity;
 
 public class User : BaseEntity
 {
-
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
+    //public string? AvatarUrl { get; private set; }
     public Email Email { get; private set; }
 
 
@@ -69,13 +69,18 @@ public class User : BaseEntity
         LastName = lastName;
     }
 
+    //public void UpdateAvatar(string avatarUrl)
+    //{
+    //    AvatarUrl = avatarUrl;
+    //}
+
     public void ChangePassword(string newPasswordHash)
     {
         Guard.AgainstNullOrEmpty(newPasswordHash, nameof(newPasswordHash));
 
         PasswordHash = newPasswordHash;
 
-        // Security requirement: Revoke all existing sessions on password change
+        RevokeAllRefreshTokens("the password changed");
     }
 
 

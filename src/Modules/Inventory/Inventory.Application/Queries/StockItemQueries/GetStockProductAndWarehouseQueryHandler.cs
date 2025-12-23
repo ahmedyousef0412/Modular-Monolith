@@ -2,36 +2,34 @@
 using Inventory.Application.Repository;
 using Inventory.Domain.Entity;
 using SharedKernel.CQRS;
+using SharedKernel.Domain;
 
 
 
 namespace Inventory.Application.Queries.StockItemQueries;
 
-public class GetStockProductAndWarehouseQueryHandler(IStockReadRepository stockReadRepository) 
+public class GetStockProductAndWarehouseQueryHandler(IStockReadRepository stockReadRepository)
     : IQueryHandler<GetStockProductAndWarehouseQuery, StockItemDto>
 {
 
     private readonly IStockReadRepository _stockReadRepository = stockReadRepository;
 
-    public async Task<StockItemDto> Handle(GetStockProductAndWarehouseQuery query, CancellationToken cancellationToken)
+    public async Task<Result<StockItemDto>> Handle(GetStockProductAndWarehouseQuery query, CancellationToken cancellationToken)
     {
-       var stockItemDto = await _stockReadRepository
-            .GetByProductAndWarehouseAsync(query.ProductId, query.WarehouseId, cancellationToken);
+        var stockItemDto = await _stockReadRepository
+             .GetByProductAndWarehouseAsync(query.ProductId, query.WarehouseId, cancellationToken);
 
-        if(stockItemDto is null)
-        {
-            return new StockItemDto
+        var dto = stockItemDto ?? new StockItemDto
             (
-                Id:Guid.Empty,
-                WarehouseId : query.WarehouseId,
-                Quantity: 0,
-                MinimumQuantity: 0,
-                MaximumQuantity: 0,
-                Status: StockStatus.OutOfStock
+                        Id: Guid.Empty,
+                        WarehouseId: query.WarehouseId,
+                        Quantity: 0,
+                        MinimumQuantity: 0,
+                        MaximumQuantity: 0,
+                        Status: StockStatus.OutOfStock
             );
-        }
 
-        return stockItemDto;
+        return Result<StockItemDto>.Success(dto);
     }
 
 }

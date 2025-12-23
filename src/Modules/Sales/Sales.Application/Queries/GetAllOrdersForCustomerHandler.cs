@@ -1,6 +1,7 @@
 ﻿using Sales.Application.Services;
 using Sales.Domain.Repository;
 using SharedKernel.CQRS;
+using SharedKernel.Domain;
 
 namespace Sales.Application.Queries;
 
@@ -16,10 +17,12 @@ public class GetAllOrdersForCustomerHandler : IQueryHandler<GetAllOrdersForCusto
         _orderMappingService = orderMappingService;
     }
 
-    public async Task<IEnumerable<OrderDto>> Handle(GetAllOrdersForCustomerQuery query, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<OrderDto>>> Handle(GetAllOrdersForCustomerQuery query, CancellationToken cancellationToken)
     {
         var orders = await _orderRepository.GetByCustomerIdAsync(query.CustomerId, cancellationToken);
 
-        return orders.Select(order => _orderMappingService.MapToDto(order));
+        var dto = orders.Select(order => _orderMappingService.MapToDto(order));
+
+        return Result<IEnumerable<OrderDto>>.Success(dto);
     }
 }

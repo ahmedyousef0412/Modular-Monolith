@@ -3,11 +3,11 @@ using Inventory.Application.Repository;
 using Inventory.Application.Services;
 using Inventory.Domain.Entity;
 using SharedKernel.CQRS;
-using SharedKernel.Exceptions;
+using SharedKernel.Domain;
 
 namespace Inventory.Application.Queries.ProductQueries;
 
-public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, ProductDto>
+public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery,ProductDto>
 {
 
     private readonly IProductRepository _productRepository;
@@ -22,15 +22,23 @@ public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, Pro
         _inventoryMappingService = inventoryMappingService;
     }
 
-    public async Task<ProductDto> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
+    public async Task<Result<ProductDto>> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(query.ProductId, cancellationToken) 
-            ?? throw new NotFoundException(nameof(Product), query.ProductId);
+        var product = await _productRepository.GetByIdAsync(query.ProductId, cancellationToken);
 
+
+        if (product is null)
+        {
+            return Result<ProductDto>.Failure(Error.NotFound(nameof(Product), query.ProductId));
+        }
 
         var stockItems = await _stockReadRepository.GetByProductIdAsync(product.Id, cancellationToken);
 
         
-        return _inventoryMappingService.MapToProductDto(product,stockItems);
+        var dto = _inventoryMappingService.MapToProductDto(product,stockItems);
+
+        return Result<ProductDto>.Success(dto);
     }
+
+    
 }
