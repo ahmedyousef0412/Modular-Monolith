@@ -7,9 +7,11 @@ using Inventory.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Sales.Api;
+using SharedKernel.Abstractions;
 using SharedKernel.Middlewares;
 using System.Text;
 using System.Text.Json.Serialization;
+using WebHost.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +32,7 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
 
-
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         //JSON enums serialize as strings
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
@@ -72,6 +74,19 @@ builder.Services.AddAuthentication(options =>
 
 
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+
+#region Configure TimeOut
+
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(30);
+//});
+
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -96,7 +111,6 @@ var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>()
 await DataSeeder.SeedAsync(dbContext, passwordHasher);
 
 #endregion
-
 
 
 

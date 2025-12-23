@@ -2,7 +2,7 @@
 using Sales.Domain.Entity;
 using Sales.Domain.Repository;
 using SharedKernel.CQRS;
-using SharedKernel.Exceptions;
+using SharedKernel.Domain;
 
 namespace Sales.Application.Queries;
 
@@ -18,11 +18,14 @@ public class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, OrderDt
         _orderMappingService = orderMappingService;
     }
 
-    public async Task<OrderDto?> Handle(GetOrderByIdQuery query, CancellationToken cancellationToken)
+    public async Task<Result<OrderDto?>> Handle(GetOrderByIdQuery query, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(query.OrderId, cancellationToken)
-            ?? throw new NotFoundException(nameof(Order), query.OrderId);
+        var order = await _orderRepository.GetByIdAsync(query.OrderId, cancellationToken);
 
-        return _orderMappingService.MapToDto(order);
+        if (order is null)
+            return Result<OrderDto?>.Failure(Error.NotFound(nameof(Order), query.OrderId));
+
+        var dto = _orderMappingService.MapToDto(order);
+        return Result<OrderDto?>.Success(dto);
     }
 }

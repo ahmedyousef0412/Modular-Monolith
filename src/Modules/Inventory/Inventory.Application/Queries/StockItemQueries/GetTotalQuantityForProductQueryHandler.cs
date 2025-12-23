@@ -1,5 +1,6 @@
 ﻿using Inventory.Application.Repository;
 using SharedKernel.CQRS;
+using SharedKernel.Domain;
 
 namespace Inventory.Application.Queries.StockItemQueries;
 
@@ -13,10 +14,10 @@ public class GetTotalQuantityForProductQueryHandler : IQueryHandler<GetTotalQuan
         _stockReadRepository = stockReadRepository;
     }
 
-    public async Task<int> Handle(GetTotalQuantityForProductQuery query, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(GetTotalQuantityForProductQuery query, CancellationToken cancellationToken)
     {
         var totalQuantity = await _stockReadRepository.GetTotalQuantityForProductAsync(query.ProductId, cancellationToken);
 
-        return totalQuantity;
+        return Result<int>.Success(totalQuantity);
     }
 }

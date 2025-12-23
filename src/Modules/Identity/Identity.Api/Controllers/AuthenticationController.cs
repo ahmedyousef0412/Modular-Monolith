@@ -11,45 +11,46 @@ namespace Identity.Api.Controllers;
 
 [ApiController]
 [Route("api/identity/auth")]
+
 public class AuthenticationController(IMediator mediator) : ControllerBase
 {
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginCommand command )
+    public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command,cancellationToken);
         return Ok(result);
     }
 
 
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> RevokeToken([FromBody] RefreshTokenCommand command)
+    public async Task<IActionResult> RevokeToken([FromBody] RefreshTokenCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command);   
+        var result = await mediator.Send(command,cancellationToken);   
         return Ok(result);
     }
 
 
     [HttpPost("revoke")] 
-    public async Task<IActionResult> Revoke([FromBody] RevokeTokenCommand command)
+    public async Task<IActionResult> Revoke([FromBody] RevokeTokenCommand command, CancellationToken cancellationToken)
     {
-        await mediator.Send(command);
+        await mediator.Send(command, cancellationToken);
         return NoContent();
     }
 
 
     [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command, cancellationToken );
         return Ok(result);
     }
 
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command, cancellationToken);
         return Ok(result);
     }
     

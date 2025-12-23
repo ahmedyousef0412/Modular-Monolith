@@ -1,6 +1,5 @@
 ﻿using Inventory.Application.Commands.StockItemCommands;
 using Inventory.Application.Dtos.StockItems;
-using Inventory.Application.Queries.ProductQueries;
 using Inventory.Application.Queries.StockItemQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,23 +8,15 @@ namespace Inventory.Api.Controllers;
 
 [ApiController]
 [Route("api/inventory/stocks")]
-public class StockItemsController : ControllerBase
+public class StockItemsController(IMediator mediator) : ControllerBase
 {
-
-    private readonly IMediator _mediator;
-
-    public StockItemsController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
 
     // GET /api/inventory/stocks/product/{id}
     [HttpGet("product/{productId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<StockItemDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByProductId(Guid productId)
+    public async Task<IActionResult> GetByProductId(Guid productId, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetStockByProductIdQuery(productId));
+        var result = await mediator.Send(new GetStockByProductIdQuery(productId),cancellationToken);
         return Ok(result);
     }
 
@@ -35,9 +26,9 @@ public class StockItemsController : ControllerBase
     // Query over POST (Bulk Fetch)
     [HttpPost("multiple")]
     [ProducesResponseType(typeof(IEnumerable<StockItemDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByProductIds([FromBody] GetStockByProductIdsQuery query)
+    public async Task<IActionResult> GetByProductIds([FromBody] GetStockByProductIdsQuery query, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(query);
+        var result = await mediator.Send(query,cancellationToken);
         return Ok(result);
     }
 
@@ -46,10 +37,10 @@ public class StockItemsController : ControllerBase
     [HttpGet("{productId:guid}/warehouse/{warehouseId:guid}")]
     [ProducesResponseType(typeof(StockItemDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetByProductAndWarehouse(Guid productId, Guid warehouseId)
+    public async Task<IActionResult> GetByProductAndWarehouse(Guid productId, Guid warehouseId, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(
-            new GetStockProductAndWarehouseQuery(productId, warehouseId)
+        var result = await mediator.Send(
+            new GetStockProductAndWarehouseQuery(productId, warehouseId),cancellationToken
         );
         return Ok(result);
     }
@@ -59,10 +50,10 @@ public class StockItemsController : ControllerBase
     // GET /api/inventory/stocks/{productId}/total-quantity
     [HttpGet("{productId:guid}/total-quantity")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetTotalQuantity(Guid productId)
+    public async Task<IActionResult> GetTotalQuantity(Guid productId, CancellationToken cancellationToken)
     {
         var query = new GetTotalQuantityForProductQuery(productId);
-        var result = await _mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 
@@ -70,9 +61,9 @@ public class StockItemsController : ControllerBase
     // POST /api/inventory/stocks
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> CreateStock([FromBody] AddStockCommand command)
+    public async Task<IActionResult> CreateStock([FromBody] AddStockCommand command, CancellationToken cancellationToken)
     {
-        await _mediator.Send(command);
+        await mediator.Send(command, cancellationToken);
         return NoContent();
     }
 
@@ -83,9 +74,9 @@ public class StockItemsController : ControllerBase
     [HttpPost("reduce")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ReduceStock([FromBody] ReduceStockCommand command)
+    public async Task<IActionResult> ReduceStock([FromBody] ReduceStockCommand command, CancellationToken cancellationToken)
     {
-        await _mediator.Send(command);
+        await mediator.Send(command, cancellationToken);
         return NoContent();
     }
 
@@ -95,9 +86,9 @@ public class StockItemsController : ControllerBase
     // PUT /api/inventory/stocks/thresholds
     [HttpPut("thresholds")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> UpdateThresholds([FromBody] UpdateStockThresholdsCommand command)
+    public async Task<IActionResult> UpdateThresholds([FromBody] UpdateStockThresholdsCommand command, CancellationToken cancellationToken)
     {
-        await _mediator.Send(command);
+        await mediator.Send(command, cancellationToken);
         return NoContent();
     }
 

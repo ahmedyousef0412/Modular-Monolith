@@ -6,18 +6,25 @@ namespace WebHost.Services;
 public class CurrentUserService(IHttpContextAccessor contextAccessor) : ICurrentUserService
 {
 
-    private readonly IHttpContextAccessor _contextAccessor = contextAccessor;
+    public Guid UserId
+    {
+        get
+        {
+            var idClaim = contextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier)
+                          ?? contextAccessor.HttpContext?.User?.FindFirstValue("sub");
 
-    public string? UserId => _contextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Guid.TryParse(idClaim, out var userId) ? userId : Guid.Empty;
+        }
+    }
 
-    public string? Username => _contextAccessor.HttpContext?.User?.Identity?.Name;
+    public string? Username => contextAccessor.HttpContext?.User?.Identity?.Name;
 
-    public string? Email => _contextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
+    public string? Email => contextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
 
-    public bool IsAuthenticated => _contextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
+    public bool IsAuthenticated => contextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
 
 
-    public IEnumerable<string> Roles => _contextAccessor.HttpContext?
+    public IEnumerable<string> Roles => contextAccessor.HttpContext?
         .User
         .Claims.Where(c => c.Type == ClaimTypes.Role)
         .Select(c => c.Value) ?? [];

@@ -44,16 +44,16 @@ public class WarehousesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("{id:guid}/deactivate")]
-    public async Task<IActionResult> Deactivate(Guid id)
+    public async Task<IActionResult> Deactivate(Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeactivateWarehouseCommand(id));
+        await mediator.Send(new DeactivateWarehouseCommand(id),cancellationToken);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}/activate")]
-    public async Task<IActionResult> Activate(Guid id)
+    public async Task<IActionResult> Activate(Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new ActivateWarehouseCommand(id));
+        await mediator.Send(new ActivateWarehouseCommand(id), cancellationToken);
         return NoContent();
     }
 }

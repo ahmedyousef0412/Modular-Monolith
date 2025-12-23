@@ -15,15 +15,13 @@
     <Folder Include="Roles\Commands\AssignRole\" />
     <Folder Include="Roles\Queries\GetRoles\" />
     <Folder Include="Roles\Commands\UpdatePermissions\" />
-    <Folder Include="Users\Commands\ChangePassword\" />
-    <Folder Include="Users\Commands\UpdateProfile\" />
-    <Folder Include="Users\Queries\GetUser\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
   </ItemGroup>
 
 </Project>

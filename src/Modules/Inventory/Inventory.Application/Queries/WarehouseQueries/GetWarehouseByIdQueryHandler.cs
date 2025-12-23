@@ -1,8 +1,8 @@
 ﻿using Inventory.Application.Dtos.Warehouses;
 using Inventory.Application.Repository;
-using MediatR;
+using Inventory.Domain.Entity;
 using SharedKernel.CQRS;
-using SharedKernel.Exceptions;
+using SharedKernel.Domain;
 
 namespace Inventory.Application.Queries.WarehouseQueries;
 
@@ -16,12 +16,15 @@ public class GetWarehouseByIdQueryHandler : IQueryHandler<GetWarehouseByIdQuery,
         _warehouseReadRepository = warehouseReadRepository;
     }
 
-    public async Task<WarehouseByIdDto> Handle(GetWarehouseByIdQuery query, CancellationToken cancellationToken)
+    public async Task<Result<WarehouseByIdDto>> Handle(GetWarehouseByIdQuery query, CancellationToken cancellationToken)
     {
-        var warehouse = await _warehouseReadRepository.GetByIdAsync(query.Id, cancellationToken)
-            ?? throw new NotFoundException("Warehouse", query.Id);
+        var warehouse = await _warehouseReadRepository.GetByIdAsync(query.Id, cancellationToken);
 
+        if (warehouse is null)
+        {
+            return Result<WarehouseByIdDto>.Failure(Error.NotFound(nameof(Warehouse), query.Id));
+        }
 
-        return warehouse;
+        return Result<WarehouseByIdDto>.Success(warehouse);
     }
 }

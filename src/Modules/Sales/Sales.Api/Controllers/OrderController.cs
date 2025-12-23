@@ -8,21 +8,14 @@ namespace Sales.Api.Controllers;
 
 [ApiController]
 [Route("api/sales/orders")]
-public class OrderController : Controller
+public class OrderController(IMediator mediator) : Controller
 {
-
-    private readonly IMediator _mediator;
-
-    public OrderController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
 
     [HttpGet]
     public async Task<IActionResult> GetOrders(CancellationToken cancellationToken)
     {
         var query = new GetAllOrdersQuery();
-        var result = await _mediator.Send(query ,cancellationToken);
+        var result = await mediator.Send(query ,cancellationToken);
         return Ok(result);
     }
 
@@ -31,7 +24,7 @@ public class OrderController : Controller
     public async Task<IActionResult> GetOrderById(Guid id,CancellationToken cancellationToken)
     {
         var query = new GetOrderByIdQuery(id);
-        var result = await _mediator.Send(query,cancellationToken);
+        var result = await mediator.Send(query,cancellationToken);
        
         return Ok(result);
     }
@@ -41,7 +34,7 @@ public class OrderController : Controller
     public async Task<IActionResult> GetOrdersByCustomerId(Guid customerId,CancellationToken cancellationToken)
     {
         var query = new GetAllOrdersForCustomerQuery(customerId);
-        var result = await _mediator.Send(query,cancellationToken);
+        var result = await mediator.Send(query,cancellationToken);
         return Ok(result);
     }
 
@@ -49,7 +42,7 @@ public class OrderController : Controller
      [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateOrderCommand command,CancellationToken cancellationToken)
     {
-      var id =   await _mediator.Send(command,cancellationToken);
+      var id = await mediator.Send(command,cancellationToken);
         return CreatedAtRoute("GetOrderById", new { id }, new { id });
     }
 
@@ -60,7 +53,7 @@ public class OrderController : Controller
 
         //// This creates a NEW object (copy) with the updated OrderId
         var commandWithId = command with { OrderId = orderId };
-        await _mediator.Send(commandWithId, cancellationToken);
+        await mediator.Send(commandWithId, cancellationToken);
         return Ok();
     }
 
@@ -69,9 +62,7 @@ public class OrderController : Controller
     {
         var command = new MarkOrderAsPaidCommand(orderId);
 
-        await _mediator.Send(command, cancellationToken);
-
-        
+        await mediator.Send(command, cancellationToken);
         return NoContent();
     }
 
@@ -80,7 +71,7 @@ public class OrderController : Controller
     {
         var command = new ConfirmOrderCommand(orderId);
          
-        await _mediator.Send(command,cancellationToken);
+        await mediator.Send(command,cancellationToken);
         return Ok();
 
     }
@@ -90,7 +81,7 @@ public class OrderController : Controller
     public async Task<IActionResult> Delete(Guid orderId,CancellationToken cancellationToken)
     {
         var command = new DeleteOrderCommand(orderId);
-        await _mediator.Send(command,cancellationToken);
+        await mediator.Send(command,cancellationToken);
         return Ok();
     }
 }

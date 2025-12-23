@@ -1,6 +1,7 @@
 ﻿using Inventory.Application.Dtos.StockItems;
 using Inventory.Application.Repository;
 using SharedKernel.CQRS;
+using SharedKernel.Domain;
 
 
 namespace Inventory.Application.Queries.StockItemQueries;
@@ -15,10 +16,10 @@ public class GetStockByProductIdsQueryHandler : IQueryHandler<GetStockByProductI
         _stockReadRepository = stockReadRepository;
     }
 
-    public async Task<IReadOnlyList<StockItemDto>> Handle(GetStockByProductIdsQuery query, CancellationToken cancellationToken)
+    public async Task<Result<IReadOnlyList<StockItemDto>>> Handle(GetStockByProductIdsQuery query, CancellationToken cancellationToken)
     {
         var stockItems = await _stockReadRepository.GetByProductIdsAndWarehouseAsync(query.ProductIds, query.WarehouseId, cancellationToken);
 
-        return stockItems;
+        return Result<IReadOnlyList<StockItemDto>>.Success(stockItems);
     }
 }
