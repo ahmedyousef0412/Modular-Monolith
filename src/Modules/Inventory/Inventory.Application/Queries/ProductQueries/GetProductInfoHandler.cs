@@ -1,7 +1,7 @@
-﻿using Inventory.Application.Abstractions;
+﻿using BuildingBlocks.Application.Contracts;
+using Inventory.Application.Abstractions;
 using Inventory.Domain.Entity;
 using MediatR;
-using SharedKernel.Contracts;
 using SharedKernel.Exceptions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 

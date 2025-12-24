@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 
-namespace SharedKernel.Contracts;
+namespace BuildingBlocks.Application.Contracts;
 
 
 // The Request (Input)

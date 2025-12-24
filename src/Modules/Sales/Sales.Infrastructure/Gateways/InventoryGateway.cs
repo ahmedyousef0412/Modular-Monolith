@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using BuildingBlocks.Application.Contracts;
+using MediatR;
 using Sales.Application.Ports;
-using SharedKernel.Contracts;
 
 
 namespace Sales.Infrastructure.Gateways;
