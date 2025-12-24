@@ -1,8 +1,7 @@
-﻿using Sales.Application.Ports;
+﻿using BuildingBlocks.Application.CQRS;
+using Sales.Application.Abstractions;
+using Sales.Application.Ports;
 using Sales.Domain.Entity;
-using Sales.Domain.Repository;
-using SharedKernel.CQRS;
-using SharedKernel.Entities;
 
 namespace Sales.Application.Commands;
 

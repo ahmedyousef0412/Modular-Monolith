@@ -1,8 +1,6 @@
-﻿using Inventory.Application.Repository;
+﻿using BuildingBlocks.Application.CQRS;
+using Inventory.Application.Abstractions;
 using Inventory.Domain.Entity;
-using Inventory.Domain.Repositories;
-using SharedKernel.CQRS;
-using SharedKernel.Entities; 
 using SharedKernel.Exceptions;
 
 namespace Inventory.Application.Commands.ProductCommands;

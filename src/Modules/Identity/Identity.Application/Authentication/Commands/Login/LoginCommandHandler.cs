@@ -1,9 +1,9 @@
-﻿using Identity.Application.Abstractions;
+﻿using BuildingBlocks.Application.CQRS;
+using Identity.Application.Abstractions;
 using Identity.Application.Authentication.Dtos;
+using Identity.Domain.Abstractions;
 using Identity.Domain.Exceptions;
-using Identity.Domain.Repositories;
 using Identity.Domain.ValueObjects;
-using SharedKernel.CQRS;
 
 namespace Identity.Application.Authentication.Commands.Login;
 

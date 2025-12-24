@@ -1,7 +1,7 @@
-﻿using Inventory.Application.Dtos.StockItems;
-using Inventory.Application.Repository;
+﻿using BuildingBlocks.Application.CQRS;
+using Inventory.Application.Abstractions;
+using Inventory.Application.Dtos.StockItems;
 using Inventory.Domain.Entity;
-using SharedKernel.CQRS;
 using SharedKernel.Domain;
 
 

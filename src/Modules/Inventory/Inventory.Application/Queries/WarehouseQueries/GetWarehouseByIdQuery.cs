@@ -1,5 +1,5 @@
-﻿using Inventory.Application.Dtos.Warehouses;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
+using Inventory.Application.Dtos.Warehouses;
 
 namespace Inventory.Application.Queries.WarehouseQueries;
 

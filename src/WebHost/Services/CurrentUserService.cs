@@ -1,4 +1,4 @@
-﻿using SharedKernel.Abstractions;
+﻿using BuildingBlocks.Application.Abstractions;
 using System.Security.Claims;
 
 namespace WebHost.Services;

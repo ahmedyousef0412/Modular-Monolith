@@ -31,7 +31,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     [HttpGet("{id:guid}",Name ="GetUserById")]
     public async Task<IActionResult> GetUser(Guid id  ,CancellationToken cancellationToken )
     {
-        var query = new GetUserQuery(id);
+        var query = new GetUserByIdQuery(id);
 
         var result = await mediator.Send(query, cancellationToken);
 

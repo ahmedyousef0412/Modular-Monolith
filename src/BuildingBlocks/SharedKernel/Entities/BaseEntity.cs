@@ -1,4 +1,4 @@
-﻿using SharedKernel.Interfaces;
+﻿using SharedKernel.Entities.Behaviors;
 
 namespace SharedKernel.Entities;
 

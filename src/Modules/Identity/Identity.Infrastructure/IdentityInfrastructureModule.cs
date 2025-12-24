@@ -1,13 +1,13 @@
-﻿using Identity.Domain.Repositories;
-using Identity.Infrastructure.Persistence;
+﻿using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Identity.Infrastructure.Services;
 using Identity.Application.Abstractions;
 using Identity.Application.Authentication;
+using BuildingBlocks.Application.Interceptors;
+using Identity.Domain.Abstractions;
 
 namespace Identity.Infrastructure;
 

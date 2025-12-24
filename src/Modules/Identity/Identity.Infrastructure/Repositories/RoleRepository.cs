@@ -1,5 +1,5 @@
-﻿using Identity.Domain.Entity;
-using Identity.Domain.Repositories;
+﻿using Identity.Domain.Abstractions;
+using Identity.Domain.Entity;
 using Identity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Common;

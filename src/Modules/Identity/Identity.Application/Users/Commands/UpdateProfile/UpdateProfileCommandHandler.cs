@@ -1,6 +1,7 @@
-﻿using Identity.Domain.Repositories;
-using SharedKernel.Abstractions;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.Abstractions;
+using BuildingBlocks.Application.CQRS;
+using Identity.Application.Abstractions;
+using Identity.Domain.Abstractions;
 using SharedKernel.Exceptions;
 
 namespace Identity.Application.Users.Commands.UpdateProfile;

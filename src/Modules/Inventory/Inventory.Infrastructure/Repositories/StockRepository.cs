@@ -1,8 +1,8 @@
-﻿using Inventory.Application.Repository;
+﻿using BuildingBlocks.Application.Abstractions;
+using Inventory.Application.Abstractions;
 using Inventory.Domain.Entity;
 using Inventory.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Repositories;
 
 namespace Inventory.Infrastructure.Repositories;
 

@@ -1,6 +1,6 @@
 ﻿namespace SharedKernel.Domain;
 
-public class Result<TValue> : Result where TValue : notnull
+public class Result<TValue> : Result 
 {
     private readonly TValue? _value;
 

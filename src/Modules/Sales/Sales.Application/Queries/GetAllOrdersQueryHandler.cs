@@ -1,6 +1,6 @@
-﻿using Sales.Application.Services;
-using Sales.Domain.Repository;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
+using Sales.Application.Abstractions;
+using Sales.Application.Services;
 using SharedKernel.Domain;
 
 namespace Sales.Application.Queries;

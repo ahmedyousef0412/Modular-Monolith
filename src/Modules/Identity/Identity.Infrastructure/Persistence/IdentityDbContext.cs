@@ -21,6 +21,7 @@ public class IdentityDbContext: DbContext,IIdentityDbContext
 
 
         modelBuilder.HasDefaultSchema("identity");
+        modelBuilder.Entity<User>().HasQueryFilter(u => u.IsActive);
 
         base.OnModelCreating(modelBuilder);
     }

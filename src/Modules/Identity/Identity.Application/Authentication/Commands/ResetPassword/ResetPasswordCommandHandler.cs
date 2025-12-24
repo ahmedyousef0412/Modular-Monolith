@@ -1,7 +1,7 @@
-﻿using Identity.Application.Abstractions;
-using Identity.Domain.Repositories;
+﻿using BuildingBlocks.Application.CQRS;
+using Identity.Application.Abstractions;
+using Identity.Domain.Abstractions;
 using Identity.Domain.ValueObjects;
-using SharedKernel.CQRS;
 
 namespace Identity.Application.Authentication.Commands.ResetPassword;
 

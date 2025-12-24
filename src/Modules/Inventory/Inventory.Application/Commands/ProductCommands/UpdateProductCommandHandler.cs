@@ -1,7 +1,6 @@
-﻿using Inventory.Application.Repository;
-using Inventory.Domain.Repositories;
+﻿using BuildingBlocks.Application.CQRS;
+using Inventory.Application.Abstractions;
 using MediatR;
-using SharedKernel.CQRS;
 
 namespace Inventory.Application.Commands.ProductCommands;
 

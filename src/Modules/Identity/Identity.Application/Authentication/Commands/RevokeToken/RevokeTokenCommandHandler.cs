@@ -1,5 +1,6 @@
-﻿using Identity.Domain.Repositories;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
+using Identity.Application.Abstractions;
+using Identity.Domain.Abstractions;
 
 namespace Identity.Application.Authentication.Commands.RevokeToken;
 
