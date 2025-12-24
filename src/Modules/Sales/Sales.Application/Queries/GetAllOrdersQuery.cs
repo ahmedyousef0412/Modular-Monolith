@@ -1,5 +1,5 @@
-﻿using Sales.Application.Commands;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
+using Sales.Application.Commands;
 
 namespace Sales.Application.Queries;
 

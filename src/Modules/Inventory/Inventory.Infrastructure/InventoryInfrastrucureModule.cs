@@ -1,11 +1,10 @@
-﻿using Inventory.Application.Repository;
-using Inventory.Domain.Repositories;
+﻿using BuildingBlocks.Application.Interceptors;
+using Inventory.Application.Abstractions;
 using Inventory.Infrastructure.Persistence;
 using Inventory.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel.Interceptors;
 
 
 namespace Inventory.Infrastructure;

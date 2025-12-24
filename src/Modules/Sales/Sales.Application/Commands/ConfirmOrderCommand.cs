@@ -1,4 +1,4 @@
-﻿using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
 
 namespace Sales.Application.Commands;
 

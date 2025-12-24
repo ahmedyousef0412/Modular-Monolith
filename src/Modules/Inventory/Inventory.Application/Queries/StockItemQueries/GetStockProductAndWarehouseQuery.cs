@@ -1,6 +1,6 @@
 
+using BuildingBlocks.Application.CQRS;
 using Inventory.Application.Dtos.StockItems;
-using SharedKernel.CQRS;
 
 namespace Inventory.Application.Queries.StockItemQueries;
 

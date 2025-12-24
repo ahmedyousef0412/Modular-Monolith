@@ -1,5 +1,5 @@
-﻿using Identity.Application.Authentication.Dtos;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
+using Identity.Application.Authentication.Dtos;
 
 namespace Identity.Application.Authentication.Commands.RefreshToken;
 

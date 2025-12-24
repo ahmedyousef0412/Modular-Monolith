@@ -1,4 +1,4 @@
-﻿using Inventory.Application.Repository;
+﻿using Inventory.Application.Abstractions;
 using Inventory.Domain.Entity;
 using MediatR;
 using SharedKernel.Contracts;

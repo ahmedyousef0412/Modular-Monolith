@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BuildingBlocks.Application.Interceptors;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sales.Application.Abstractions;
 using Sales.Application.Ports;
-using Sales.Domain.Repository;
 using Sales.Infrastructure.Gateways;
 using Sales.Infrastructure.Persistence;
 using Sales.Infrastructure.Repositories;
-using SharedKernel.Interceptors;
 
 namespace Sales.Infrastructure;
 

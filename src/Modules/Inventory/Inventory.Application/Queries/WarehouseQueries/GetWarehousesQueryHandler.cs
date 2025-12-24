@@ -1,5 +1,5 @@
-﻿using Inventory.Application.Dtos.Warehouses;
-using Inventory.Application.Repository;
+﻿using Inventory.Application.Abstractions;
+using Inventory.Application.Dtos.Warehouses;
 using MediatR;
 
 namespace Inventory.Application.Queries.WarehouseQueries;

@@ -1,3 +1,5 @@
+using BuildingBlocks.Application.Abstractions;
+using BuildingBlocks.Application.Middlewares;
 using Identity.Api;
 using Identity.Application.Abstractions;
 using Identity.Application.Authentication;
@@ -7,8 +9,6 @@ using Inventory.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Sales.Api;
-using SharedKernel.Abstractions;
-using SharedKernel.Middlewares;
 using System.Text;
 using System.Text.Json.Serialization;
 using WebHost.Services;

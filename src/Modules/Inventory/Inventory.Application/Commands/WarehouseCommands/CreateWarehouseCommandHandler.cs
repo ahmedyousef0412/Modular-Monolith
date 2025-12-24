@@ -1,6 +1,5 @@
-﻿using Inventory.Application.Repository;
+﻿using Inventory.Application.Abstractions;
 using Inventory.Domain.Entity;
-using Inventory.Domain.Repositories;
 using MediatR;
 using SharedKernel.Exceptions;
 

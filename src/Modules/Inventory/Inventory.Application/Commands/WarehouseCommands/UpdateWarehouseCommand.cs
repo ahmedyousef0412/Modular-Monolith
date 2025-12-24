@@ -1,5 +1,4 @@
-﻿using MediatR;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
 
 namespace Inventory.Application.Commands.WarehouseCommands;
 

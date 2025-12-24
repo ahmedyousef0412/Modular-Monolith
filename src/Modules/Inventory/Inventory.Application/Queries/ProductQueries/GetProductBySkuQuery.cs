@@ -1,5 +1,5 @@
-﻿using Inventory.Application.Dtos.Products;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
+using Inventory.Application.Dtos.Products;
 
 
 namespace Inventory.Application.Queries.ProductQueries;

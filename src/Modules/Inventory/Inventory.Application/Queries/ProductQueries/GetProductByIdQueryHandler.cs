@@ -1,8 +1,8 @@
-﻿using Inventory.Application.Dtos.Products;
-using Inventory.Application.Repository;
+﻿using BuildingBlocks.Application.CQRS;
+using Inventory.Application.Abstractions;
+using Inventory.Application.Dtos.Products;
 using Inventory.Application.Services;
 using Inventory.Domain.Entity;
-using SharedKernel.CQRS;
 using SharedKernel.Domain;
 
 namespace Inventory.Application.Queries.ProductQueries;

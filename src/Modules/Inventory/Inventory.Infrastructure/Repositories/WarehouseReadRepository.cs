@@ -1,6 +1,6 @@
-﻿using Inventory.Application.Dtos.Warehouses;
+﻿using Inventory.Application.Abstractions;
+using Inventory.Application.Dtos.Warehouses;
 using Inventory.Application.Queries.WarehouseQueries;
-using Inventory.Application.Repository;
 using Inventory.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,5 +1,5 @@
-﻿using Inventory.Application.Repository;
-using SharedKernel.CQRS;
+﻿using BuildingBlocks.Application.CQRS;
+using Inventory.Application.Abstractions;
 using SharedKernel.Domain;
 
 namespace Inventory.Application.Queries.StockItemQueries;

@@ -1,7 +1,8 @@
 ﻿using Identity.Application.Abstractions;
+using Identity.Domain.Abstractions;
 using Identity.Domain.Entity;
-using Identity.Domain.Repositories;
 using Microsoft.IdentityModel.JsonWebTokens;
+using SharedKernel.Constants;
 using System.Security.Claims;
 
 namespace Identity.Application.Authentication;
@@ -20,7 +21,11 @@ public class UserClaimsProvider : IUserClaimsProvider
 
         var roles = await _roleRepository.GetListByIdsAsync(roleIds, cancellationToken);
 
-        var claims = new List<Claim>
+
+        //
+        var totalClaimCount = 5 + roles.Count + roles.Sum(r => r.Permissions.Count);
+
+        var claims = new List<Claim>(totalClaimCount)
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
@@ -35,7 +40,7 @@ public class UserClaimsProvider : IUserClaimsProvider
 
             foreach (var permission in role.Permissions)
             {
-                claims.Add(new Claim("permission", permission.PermissionCode));
+                claims.Add(new Claim(ClaimConstants.Permission, permission.PermissionCode));
             }
         }
 
