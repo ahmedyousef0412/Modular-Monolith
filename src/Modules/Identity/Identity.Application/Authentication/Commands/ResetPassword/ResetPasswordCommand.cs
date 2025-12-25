@@ -7,5 +7,5 @@ public record ResetPasswordCommand(
     string Token,
     string NewPassword,
     string ConfirmNewPassword
-) :ICommand<CommandResult>;
+) :ICommand;
 

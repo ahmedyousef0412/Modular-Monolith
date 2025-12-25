@@ -6,7 +6,7 @@ namespace SharedKernel.Constants;
 /// <summary>
 /// Define my permissions as constants so I can use them in attributes across modules.
 /// </summary>
-public static class Permissions
+public static class PermissionsHelper
 {
 
     //NestedType
@@ -46,7 +46,7 @@ public static class Permissions
     {
         //Static fields don’t need an instance, so we pass null
 
-        return typeof(Permissions)
+        return typeof(PermissionsHelper)
             .GetNestedTypes()
             .SelectMany(c => c.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))
             .Select(f => f.GetValue(null).ToString())

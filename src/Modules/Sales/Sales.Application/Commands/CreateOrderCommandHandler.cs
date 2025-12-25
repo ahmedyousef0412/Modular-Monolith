@@ -2,6 +2,7 @@
 using Sales.Application.Abstractions;
 using Sales.Application.Ports;
 using Sales.Domain.Entity;
+using SharedKernel.Domain;
 
 namespace Sales.Application.Commands;
 
@@ -19,7 +20,7 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Gui
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
         var order = Order.Create(command.CustomerId);
 
@@ -39,7 +40,7 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Gui
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return order.Id;
+        return Result.Success(order.Id);
 
     }
 }

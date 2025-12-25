@@ -2,4 +2,4 @@
 
 namespace Inventory.Application.Commands.WarehouseCommands;
 
-public record UpdateWarehouseCommand(Guid Id, string Name, string Location) : IResultCommand;
+public record UpdateWarehouseCommand(Guid Id, string Name, string Location) : ICommand;

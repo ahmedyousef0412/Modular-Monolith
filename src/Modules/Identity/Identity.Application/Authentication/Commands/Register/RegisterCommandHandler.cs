@@ -5,6 +5,7 @@ using Identity.Domain.Constants;
 using Identity.Domain.Entity;
 using Identity.Domain.Exceptions;
 using Identity.Domain.ValueObjects;
+using SharedKernel.Domain;
 
 namespace Identity.Application.Authentication.Commands.Register;
 
@@ -27,7 +28,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand,Guid>
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<Guid> Handle(RegisterCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
         var email = Email.Create(command.Email);
         var existingUser = await _userRepository.IsEmailUniqueAsync(email,cancellationToken);
@@ -57,6 +58,6 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand,Guid>
 
         await _identityUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return user.Id;
+        return Result.Success(user.Id);
     }
 }

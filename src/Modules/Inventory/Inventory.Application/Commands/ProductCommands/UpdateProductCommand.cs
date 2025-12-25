@@ -7,6 +7,6 @@ public record UpdateProductCommand(
     string Sku,
     string Description,
     decimal Price
-) : IResultCommand;
+) : ICommand;
 
-public record UpdateProductRequest(Guid Id, UpdateProductCommand Command) : IResultCommand;
+public record UpdateProductRequest(Guid Id, UpdateProductCommand Command) : ICommand;

@@ -3,6 +3,7 @@ using Identity.Application.Abstractions;
 using Identity.Application.Authentication.Dtos;
 using Identity.Domain.Abstractions;
 using Identity.Domain.Exceptions;
+using SharedKernel.Domain;
 
 namespace Identity.Application.Authentication.Commands.RefreshToken;
 
@@ -17,7 +18,7 @@ public class RefreshTokenCommandHandler
     : ICommandHandler<RefreshTokenCommand, AuthResponse>
 {
 
-    public async Task<AuthResponse> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByRefreshTokenAsync(command.RefreshToken, cancellationToken)
             ?? throw new InvalidTokenException("Token is invalid or expired");
@@ -48,7 +49,7 @@ public class RefreshTokenCommandHandler
 
         await identityUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new AuthResponse(newAccessToken, newRefreshToken);
+        return Result.Success(new AuthResponse(newAccessToken, newRefreshToken));
     }
 }
 

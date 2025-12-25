@@ -2,6 +2,7 @@
 using BuildingBlocks.Application.CQRS;
 using Identity.Application.Abstractions;
 using Identity.Domain.Abstractions;
+using SharedKernel.Domain;
 using SharedKernel.Exceptions;
 
 namespace Identity.Application.Users.Commands.UpdateProfile;
@@ -11,9 +12,9 @@ public class UpdateProfileCommandHandler
         IUserRepository userRepository,
         IIdentityUnitOfWork unitOfWork,
         ICurrentUserService currentUser
-    ) : ICommandHandler<UpdateProfileCommand, CommandResult>
+    ) : ICommandHandler<UpdateProfileCommand>
 {
-    public async Task<CommandResult> Handle(UpdateProfileCommand command, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateProfileCommand command, CancellationToken cancellationToken)
     {
         // 1. Security: Get ID from Token (Not from the user input)
         var userId = currentUser.UserId;
@@ -27,6 +28,6 @@ public class UpdateProfileCommandHandler
         
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return CommandResult.Success();
+        return Result.Success();
     }
 }

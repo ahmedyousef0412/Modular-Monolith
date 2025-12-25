@@ -47,4 +47,22 @@ public class RoleRepository : IRoleRepository
         .Where(r => ids.Contains(r.Id))
         .ToListAsync(cancellationToken);
     }
+
+    public async Task<bool> IsNameUniqueAsync(string name, Guid? excludeId = null, CancellationToken cancellationToken = default)
+    {
+        var query = _dbContext.Roles.AsNoTracking();
+
+        // If we are updating, ignore the record we are currently editing
+        //SELECT Count(*) FROM Roles WHERE Name = 'Admin' AND ID != excludeId.HasValue
+
+        if (excludeId.HasValue)
+        {
+            //Is there any role name admin and id not  roleId will send in command?
+            query = query.Where(r => r.Id != excludeId.Value);
+        }
+
+        var isTaken = await query.AnyAsync(r => r.Name == name, cancellationToken);
+
+        return !isTaken;
+    }
 }

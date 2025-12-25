@@ -2,5 +2,5 @@
 
 namespace Sales.Application.Commands;
 
-public record DeleteOrderCommand(Guid OrderId) : IResultCommand;
+public record DeleteOrderCommand(Guid OrderId) : ICommand;
 

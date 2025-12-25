@@ -1,11 +1,13 @@
 ﻿using BuildingBlocks.Application.CQRS;
+using MediatR;
 using Sales.Application.Abstractions;
 using Sales.Domain.Entity;
+using SharedKernel.Domain;
 using SharedKernel.Exceptions;
 
 namespace Sales.Application.Commands;
 
-public class AddOrderItemCommandHandler : ICommandHandler<AddOrderItemCommand>
+public class AddOrderItemCommandHandler : ICommandHandler<AddOrderItemCommand,Guid>
 {
     private readonly IOrderRepository _repository;
     private readonly ISalesUnitOfWork _unitOfWork;
@@ -15,7 +17,7 @@ public class AddOrderItemCommandHandler : ICommandHandler<AddOrderItemCommand>
         _repository = repository;
         _unitOfWork = unitOfWork;
     }
-    public async Task<Guid> Handle(AddOrderItemCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(AddOrderItemCommand command, CancellationToken cancellationToken)
     {
        var order = await _repository.GetByIdAsync(command.OrderId, cancellationToken)
             ?? throw new NotFoundException(nameof(Order), command.OrderId);
@@ -24,8 +26,10 @@ public class AddOrderItemCommandHandler : ICommandHandler<AddOrderItemCommand>
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return order.Id;
+        return Result.Success(order.Id);
 
 
     }
+
+   
 }

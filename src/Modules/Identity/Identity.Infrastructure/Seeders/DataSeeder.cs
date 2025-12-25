@@ -37,7 +37,7 @@ public class DataSeeder
                          ?? throw new DomainException("Admin role not found.");
 
 
-        var allPermissions = Permissions.GetAllPermissions();
+        var allPermissions = PermissionsHelper.GetAllPermissions();
 
 
         var existingPermissions = adminRole.Permissions

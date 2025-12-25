@@ -37,8 +37,8 @@ public class ProductsController(IMediator mediator) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
     {
-        Guid productId = await mediator.Send(command,cancellationToken);
-        return CreatedAtAction(nameof(GetProductById), new { id = productId }, new { id = productId });
+       var result =  await mediator.Send(command,cancellationToken);
+        return CreatedAtAction(nameof(GetProductById), new { id = result.Value }, new { id = result.Value });
     }
 
 

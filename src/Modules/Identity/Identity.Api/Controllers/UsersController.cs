@@ -1,4 +1,6 @@
-﻿using Identity.Application.Users.Commands.ChangePassword;
+﻿using Identity.Application.Roles.Commands.AssignRole;
+using Identity.Application.Roles.Commands.RevokeRole;
+using Identity.Application.Users.Commands.ChangePassword;
 using Identity.Application.Users.Commands.UpdateProfile;
 using Identity.Application.Users.Queries.GetUser;
 using Identity.Application.Users.Queries.GetUsers;
@@ -48,5 +50,26 @@ public class UsersController(IMediator mediator) : ControllerBase
             return NotFound(result.Error.Description);
 
         return Ok(result);
+    }
+
+
+    [HttpPost("assign-role")]
+    public async Task<IActionResult> AssignRole([FromBody] AssignRoleCommand command, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(command, cancellationToken);
+
+        return Ok(result.IsSuccess ? result : result.Error);
+    }
+
+
+
+    [HttpDelete("{userId}/roles/{roleId}")]
+    public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId, CancellationToken cancellationToken)
+    {
+        var command = new RevokeRoleCommand(userId, roleId);
+
+        var result = await mediator.Send(command, cancellationToken);
+
+        return Ok(result); // Returns 204 No Content or 404
     }
 }

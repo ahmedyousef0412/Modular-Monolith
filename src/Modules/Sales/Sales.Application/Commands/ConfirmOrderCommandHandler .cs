@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Application.CQRS;
 using Sales.Application.Abstractions;
 using Sales.Domain.Entity;
+using SharedKernel.Domain;
 using SharedKernel.Exceptions;
 
 
@@ -16,13 +17,15 @@ public class ConfirmOrderCommandHandler : ICommandHandler<ConfirmOrderCommand, b
         _repository = repository;
         _unitOfWork = unitOfWork;
     }
-    public async Task<bool> Handle(ConfirmOrderCommand command, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(ConfirmOrderCommand command, CancellationToken cancellationToken)
     {
         var order = await _repository.GetByIdAsync(command.OrderId, cancellationToken)
            ?? throw new NotFoundException(nameof(Order), command.OrderId);
 
         order.Confirm();
 
-        return await _unitOfWork.SaveEntitiesAsync(cancellationToken);
+         await _unitOfWork.SaveEntitiesAsync(cancellationToken);
+
+        return Result.Success(true);
     }
 }
