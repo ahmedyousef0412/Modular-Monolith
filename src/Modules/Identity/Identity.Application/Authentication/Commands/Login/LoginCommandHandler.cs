@@ -4,6 +4,7 @@ using Identity.Application.Authentication.Dtos;
 using Identity.Domain.Abstractions;
 using Identity.Domain.Exceptions;
 using Identity.Domain.ValueObjects;
+using SharedKernel.Domain;
 
 namespace Identity.Application.Authentication.Commands.Login;
 
@@ -18,7 +19,7 @@ public class LoginCommandHandler(
 {
 
 
-    public async Task<AuthResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> Handle(LoginCommand command, CancellationToken cancellationToken)
     {
 
         var email = Email.Create(command.Email);
@@ -48,8 +49,10 @@ public class LoginCommandHandler(
 
         await identityUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new AuthResponse(token, refreshToken);
+        return Result.Success( new AuthResponse(token, refreshToken));
 
 
     }
+
+    
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Application.Commands;
 using Sales.Application.Queries;
@@ -40,6 +41,7 @@ public class OrderController(IMediator mediator) : Controller
 
    
      [HttpPost]
+  
     public async Task<IActionResult> Create([FromBody] CreateOrderCommand command,CancellationToken cancellationToken)
     {
       var id = await mediator.Send(command,cancellationToken);

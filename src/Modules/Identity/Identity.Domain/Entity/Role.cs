@@ -1,4 +1,5 @@
 ﻿using SharedKernel.Common;
+using SharedKernel.Domain;
 using SharedKernel.Entities;
 using SharedKernel.Exceptions;
 
@@ -54,7 +55,32 @@ public class Role : BaseEntity
         _permissions.Add(permission);
     }
 
+    public Result UpdatePermissions(List<string> newCodes)
+    {
+        var currentPermissionsCode = _permissions.Select(p => p.PermissionCode).ToHashSet();
+        //A , B , C , D
 
+        var newCodesSet = newCodes.ToHashSet();
+                                             // A , B  E         A , B , C , D
+        var newCodesToAdd = newCodesSet.Except(currentPermissionsCode);
+
+        foreach ( var code in newCodesToAdd )
+        {
+            _permissions.Add(new RolePermission(code));
+        }
+
+        var codeToRemove =
+                                _permissions
+                                 .Where(p => !newCodesSet.Contains(p.PermissionCode))
+                                  .ToList();
+
+        foreach (var perm in codeToRemove)
+        {
+            _permissions.Remove(perm);
+        }
+
+        return Result.Success();    
+    }
     public void RemovePermission(string permissionCode)
     {
         var perm = _permissions.FirstOrDefault(p => p.PermissionCode == permissionCode);

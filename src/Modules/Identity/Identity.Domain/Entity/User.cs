@@ -1,6 +1,7 @@
 ﻿using Identity.Domain.Exceptions;
 using Identity.Domain.ValueObjects;
 using SharedKernel.Common;
+using SharedKernel.Domain;
 using SharedKernel.Entities;
 using SharedKernel.Exceptions;
 
@@ -106,25 +107,29 @@ public class User : BaseEntity
         PasswordResetTokenExpiresOn = null;
     }
 
-    public void AssignRole(Role role)
+    public Result AssignRole(Role role)
     {
         Guard.AgainstNullOrEmpty(role, nameof(role));
 
         if (_userRoles.Any(ur => ur.RoleId == role.Id))
-            throw new DomainException("User already has this role assigned.");
+            return Result.Failure(Error.Conflict("User already has this role assigned."));
 
         var userRole = UserRole.Create(this, role);
 
         _userRoles.Add(userRole);
+
+        return Result.Success();
     }
 
-    public void RemoveRole(Guid roleId)
+    public Result RemoveRole(Guid roleId)
     {
         var role = _userRoles.FirstOrDefault(x => x.RoleId == roleId);
-        if (role != null)
+        if (role is null)
         {
-            _userRoles.Remove(role);
+            return Result.Failure(Error.NotFound("Role", "User does not have this role assigned."));
         }
+        _userRoles.Remove(role);
+        return Result.Success();
     }
 
     public void AddSession(string token, DateTime expiresAt)

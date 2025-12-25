@@ -3,6 +3,7 @@ using BuildingBlocks.Application.CQRS;
 using Identity.Application.Abstractions;
 using Identity.Domain.Abstractions;
 using Identity.Domain.Exceptions;
+using SharedKernel.Domain;
 using SharedKernel.Exceptions;
 
 namespace Identity.Application.Users.Commands.ChangePassword;
@@ -14,9 +15,9 @@ public class ChangePasswordCommandHandler
       ICurrentUserService currentUser,
       IIdentityUnitOfWork unitOfWork
 
-    ) : ICommandHandler<ChangePasswordCommand, CommandResult>
+    ) : ICommandHandler<ChangePasswordCommand>
 {
-    public async Task<CommandResult> Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
     {
         if (!currentUser.IsAuthenticated)
             throw new UnauthorizedException();
@@ -27,12 +28,12 @@ public class ChangePasswordCommandHandler
 
         if (!passwordHasher.Verify(command.CurrentPassword, user.PasswordHash))
         {
-            return CommandResult.Failure(["Current password is incorrect."]);
+            return Result.Failure(UserErrors.InvalidCurrentPassword);
         }
 
         if (passwordHasher.Verify(command.NewPassword, user.PasswordHash))
         {
-            return CommandResult.Failure(["New password cannot be the same as the old password."]);
+            return Result.Failure(UserErrors.NewPasswordSameAsOld);
         }
 
         var newPasswordHash = passwordHasher.Hash(command.NewPassword);
@@ -41,6 +42,6 @@ public class ChangePasswordCommandHandler
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return CommandResult.Success();
+        return Result.Success();
     }
 }

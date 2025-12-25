@@ -1,10 +1,11 @@
 ﻿using BuildingBlocks.Application.CQRS;
 using Inventory.Application.Abstractions;
-using MediatR;
+using Inventory.Domain.Entity;
+using SharedKernel.Domain;
 
 namespace Inventory.Application.Commands.ProductCommands;
 
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductRequest, CommandResult>
+public class UpdateProductCommandHandler : ICommandHandler<UpdateProductRequest>
 {
 
     private readonly IProductRepository _productRepository;
@@ -16,20 +17,20 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductRequest,
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CommandResult> Handle(UpdateProductRequest request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateProductRequest request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (product is null)
         {
-            return CommandResult.Failure(new List<string> { "Product not found." });
+            return Result.Failure(Error.NotFound(nameof(Product),request.Id));
         }
 
         product.UpdateDetails(request.Command.Name, request.Command.Description, request.Command.Price);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return CommandResult.Success();
+        return Result.Success();
     }
 }
     

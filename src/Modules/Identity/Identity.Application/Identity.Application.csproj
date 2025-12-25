@@ -12,17 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Roles\Commands\CreateRole\" />
-    <Folder Include="Roles\Commands\AssignRole\" />
-    <Folder Include="Roles\Commands\DeleteRole\" />
-    <Folder Include="Roles\Commands\RevokeRole\" />
-    <Folder Include="Roles\Commands\UpdateRole\" />
-    <Folder Include="Roles\Queries\GetRoles\" />
-    <Folder Include="Roles\Commands\UpdatePermissions\" />
-    <Folder Include="Roles\Queries\GetRole\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />

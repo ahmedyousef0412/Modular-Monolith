@@ -8,5 +8,5 @@ public record AddOrderItemCommand(
     Guid ProductId,
     string ProductName,
     int Quantity,
-    decimal UnitPrice) : ICommand;
+    decimal UnitPrice) : ICommand<Guid>;
 

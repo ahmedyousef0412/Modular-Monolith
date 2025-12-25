@@ -17,7 +17,7 @@ public class RolePermission
     internal RolePermission(string permissionCode)
     {
         Guard.AgainstNullOrEmpty(permissionCode, nameof(permissionCode));
-
+        //RoleId = roleId;
         PermissionCode = permissionCode.Trim();
     }
 }

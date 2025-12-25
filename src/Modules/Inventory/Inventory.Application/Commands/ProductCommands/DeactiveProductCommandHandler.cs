@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Application.CQRS;
 using Inventory.Application.Abstractions;
 using Inventory.Domain.Entity;
+using SharedKernel.Domain;
 using SharedKernel.Exceptions;
 
 namespace Inventory.Application.Commands.ProductCommands;
@@ -17,7 +18,7 @@ public class DeactiveProductCommandHandler : ICommandHandler<DeactiveProductComm
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> Handle(DeactiveProductCommand command, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(DeactiveProductCommand command, CancellationToken cancellationToken)
     {
        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken) 
             ?? throw new NotFoundException(nameof(Product), command.ProductId);
@@ -25,7 +26,6 @@ public class DeactiveProductCommandHandler : ICommandHandler<DeactiveProductComm
         product.DeactiveProduct();
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        return true;
+        return Result.Success(true);
     }
 }

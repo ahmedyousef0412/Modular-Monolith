@@ -6,4 +6,5 @@ namespace Identity.Application.Abstractions;
 public interface IIdentityDbContext
 {
     DbSet<User> Users { get; }
+    DbSet<Role> Roles { get; }
 }

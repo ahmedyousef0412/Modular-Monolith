@@ -5,4 +5,4 @@ namespace Identity.Application.Users.Commands.UpdateProfile;
 public record UpdateProfileCommand(
     string FirstName,
     string LastName
-) : ICommand<CommandResult>;
+) : ICommand;
