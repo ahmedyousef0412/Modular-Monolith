@@ -48,7 +48,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand,Guid>
             passwordHash
         );
 
-        var memberRole = await _roleRepository.GetByNameAsync(RoleConstants.Member, cancellationToken)
+        var memberRole = await _roleRepository.GetByNameAsync(RoleConstants.User, cancellationToken)
            ?? throw new InvalidOperationException("System is not properly seeded. Default role missing.");
 
 

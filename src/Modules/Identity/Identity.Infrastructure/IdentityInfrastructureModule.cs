@@ -1,13 +1,15 @@
-﻿using Identity.Infrastructure.Persistence;
-using Identity.Infrastructure.Repositories;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Identity.Infrastructure.Services;
+﻿using BuildingBlocks.Application.Interceptors;
+using BuildingBlocks.Application.Security;
 using Identity.Application.Abstractions;
 using Identity.Application.Authentication;
-using BuildingBlocks.Application.Interceptors;
 using Identity.Domain.Abstractions;
+using Identity.Infrastructure.Persistence;
+using Identity.Infrastructure.Repositories;
+using Identity.Infrastructure.Security;
+using Identity.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Infrastructure;
 
@@ -31,6 +33,7 @@ public static class IdentityInfrastructureModule
         services.AddScoped<IIdentityDbContext, IdentityDbContext>();
         services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
 
+        services.AddScoped<IPermissionService, PermissionService>();
 
         services.AddOptions<JwtSettings>()
             .BindConfiguration(JwtSettings.SectionName)

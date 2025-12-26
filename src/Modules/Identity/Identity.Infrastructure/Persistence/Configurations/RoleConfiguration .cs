@@ -30,6 +30,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
 
             p.Property(x => x.PermissionCode)
              .HasMaxLength(100)
+             
              .IsRequired();
         });
     }
