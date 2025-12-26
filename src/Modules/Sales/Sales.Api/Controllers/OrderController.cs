@@ -1,18 +1,22 @@
-﻿using MediatR;
+﻿using BuildingBlocks.Application.Security;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Application.Commands;
 using Sales.Application.Queries;
+using SharedKernel.Constants;
 
 
 namespace Sales.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/sales/orders")]
 public class OrderController(IMediator mediator) : Controller
 {
 
     [HttpGet]
+    [HasPermission(PermissionsHelper.Sales.View)]
     public async Task<IActionResult> GetOrders(CancellationToken cancellationToken)
     {
         var query = new GetAllOrdersQuery();
@@ -22,6 +26,7 @@ public class OrderController(IMediator mediator) : Controller
 
   
     [HttpGet("{id:guid}",Name ="GetOrderById")]
+    [HasPermission(PermissionsHelper.Sales.View)]
     public async Task<IActionResult> GetOrderById(Guid id,CancellationToken cancellationToken)
     {
         var query = new GetOrderByIdQuery(id);
@@ -32,6 +37,7 @@ public class OrderController(IMediator mediator) : Controller
 
    
     [HttpGet("customer/{customerId:guid}")]
+    [HasPermission(PermissionsHelper.Sales.View)]
     public async Task<IActionResult> GetOrdersByCustomerId(Guid customerId,CancellationToken cancellationToken)
     {
         var query = new GetAllOrdersForCustomerQuery(customerId);
@@ -40,8 +46,8 @@ public class OrderController(IMediator mediator) : Controller
     }
 
    
-     [HttpPost]
-  
+    [HttpPost]
+    [HasPermission(PermissionsHelper.Sales.Create)]
     public async Task<IActionResult> Create([FromBody] CreateOrderCommand command,CancellationToken cancellationToken)
     {
       var id = await mediator.Send(command,cancellationToken);
@@ -50,6 +56,7 @@ public class OrderController(IMediator mediator) : Controller
 
 
     [HttpPut("update-order-quantity/{orderId}")]
+    [HasPermission(PermissionsHelper.Sales.Edit)]
     public async Task<IActionResult> UpdateOrderQuantity(Guid orderId, [FromBody] UpdateQuantityCommand command, CancellationToken cancellationToken)
     {
 
@@ -60,6 +67,7 @@ public class OrderController(IMediator mediator) : Controller
     }
 
     [HttpPut("{orderId:guid}/mark-as-paid")]
+    [HasPermission(PermissionsHelper.Sales.Edit)]
     public async Task<IActionResult> MarkAsPaid(Guid orderId, CancellationToken cancellationToken)
     {
         var command = new MarkOrderAsPaidCommand(orderId);
@@ -69,6 +77,7 @@ public class OrderController(IMediator mediator) : Controller
     }
 
     [HttpPost("{orderId:guid}/confirm")]
+    [HasPermission(PermissionsHelper.Sales.Edit)]
     public async Task<IActionResult> ConfirmOrder(Guid orderId, CancellationToken cancellationToken)
     {
         var command = new ConfirmOrderCommand(orderId);
@@ -80,6 +89,7 @@ public class OrderController(IMediator mediator) : Controller
   
     
     [HttpDelete("{orderId:guid}")]
+    [HasPermission(PermissionsHelper.Sales.Delete)]
     public async Task<IActionResult> Delete(Guid orderId,CancellationToken cancellationToken)
     {
         var command = new DeleteOrderCommand(orderId);

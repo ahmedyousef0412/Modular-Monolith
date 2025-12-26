@@ -1,4 +1,5 @@
 ﻿using Identity.Application.Abstractions;
+using Identity.Domain.Constants;
 using Identity.Domain.Entity;
 using Identity.Domain.ValueObjects;
 using Identity.Infrastructure.Persistence;
@@ -17,15 +18,23 @@ public class DataSeeder
 
         #region Roles
 
-        if (!context.Roles.Any())
+    
+        if (!await context.Roles.AnyAsync(r => r.Name == RoleConstants.Admin)
+            )
         {
             var admin = Role.Create("Admin", "Administrator role with full permissions");
-            var user = Role.Create("User", "Standard user role with limited permissions");
-
-            context.Roles.AddRange(admin, user);
-            await context.SaveChangesAsync();
-
+            context.Roles.Add(admin);
         }
+
+
+        if (!await context.Roles.AnyAsync(r => r.Name == RoleConstants.User))
+        {
+            var user = Role.Create("User", "Standard user role with limited permissions");
+            context.Roles.Add(user);
+        }
+
+       
+        await context.SaveChangesAsync();
 
         #endregion
 
@@ -44,20 +53,29 @@ public class DataSeeder
                         .Select(p => p.PermissionCode)
                         .ToHashSet();
 
+        bool hasNewPermissions = false;
+
         foreach (var permission in allPermissions)
         {
-            if(!existingPermissions.Contains(permission))
+            if (!existingPermissions.Contains(permission))
+            {
                 adminRole.AddPermission(permission);
+                hasNewPermissions = true;
+            }
+                
         }
 
-        await context.SaveChangesAsync();
+        if (hasNewPermissions)
+        {
+            await context.SaveChangesAsync();
+        }
 
 
         #endregion
 
         #region Default Admin User
 
-        if (!context.Users.Any())
+        if (!await context.Users.AnyAsync())
         {
             var passwordHash = passwordHasher.Hash("Admin123");
 

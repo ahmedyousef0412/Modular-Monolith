@@ -1,12 +1,12 @@
-﻿using Identity.Application.Roles.Commands.AssignRole;
+﻿using BuildingBlocks.Application.Security;
+using Identity.Application.Roles.Commands.AssignRole;
 using Identity.Application.Roles.Commands.RevokeRole;
-using Identity.Application.Users.Commands.ChangePassword;
-using Identity.Application.Users.Commands.UpdateProfile;
 using Identity.Application.Users.Queries.GetUser;
 using Identity.Application.Users.Queries.GetUsers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedKernel.Constants;
 
 namespace Identity.Api.Controllers;
 
@@ -16,22 +16,8 @@ namespace Identity.Api.Controllers;
 public class UsersController(IMediator mediator) : ControllerBase
 {
 
-    [HttpPut("profile")]
-    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command,CancellationToken cancellationToken)
-    {
-        await mediator.Send(command,cancellationToken);
-
-        return NoContent();
-    }
-
-    [HttpPut("change-password")]
-    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command,CancellationToken cancellationToken)
-    {
-        await mediator.Send(command, cancellationToken);
-        return Ok();
-    }
-
-    [HttpGet("users")]
+    [HttpGet]
+    [HasPermission(PermissionsHelper.Users.View)]
     public async Task<IActionResult> GetAll([FromQuery]GetAllUsersQuery query, CancellationToken cancellationToken )
     {
         var result = await mediator.Send(query,cancellationToken); 
@@ -40,6 +26,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 
 
     [HttpGet("{id:guid}",Name ="GetUserById")]
+    [HasPermission(PermissionsHelper.Users.View)]
     public async Task<IActionResult> GetUser(Guid id  ,CancellationToken cancellationToken )
     {
         var query = new GetUserByIdQuery(id);
@@ -54,6 +41,8 @@ public class UsersController(IMediator mediator) : ControllerBase
 
 
     [HttpPost("assign-role")]
+    [HasPermission(PermissionsHelper.Users.ManageRoles)]
+
     public async Task<IActionResult> AssignRole([FromBody] AssignRoleCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
@@ -64,6 +53,8 @@ public class UsersController(IMediator mediator) : ControllerBase
 
 
     [HttpDelete("{userId}/roles/{roleId}")]
+    [HasPermission(PermissionsHelper.Users.ManageRoles)]
+
     public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId, CancellationToken cancellationToken)
     {
         var command = new RevokeRoleCommand(userId, roleId);
