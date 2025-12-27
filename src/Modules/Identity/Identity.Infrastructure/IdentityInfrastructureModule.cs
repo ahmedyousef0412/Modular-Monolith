@@ -10,6 +10,7 @@ using Identity.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.Constants;
 
 namespace Identity.Infrastructure;
 
@@ -33,8 +34,21 @@ public static class IdentityInfrastructureModule
         services.AddScoped<IIdentityDbContext, IdentityDbContext>();
         services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
 
-        services.AddScoped<IPermissionService, PermissionService>();
+        services.AddAuthorization(options =>
+        {
 
+            var permissions = PermissionsHelper.GetAllPermissions();
+
+            foreach (var permission in permissions)
+            {
+
+                options.AddPolicy(permission, policy =>
+                policy.RequireClaim("permission", permission));
+            }
+        });
+
+        services.AddScoped<IPermissionService, PermissionService>();
+       
         services.AddOptions<JwtSettings>()
             .BindConfiguration(JwtSettings.SectionName)
             .ValidateDataAnnotations()
