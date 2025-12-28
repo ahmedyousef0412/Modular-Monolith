@@ -1,4 +1,9 @@
 ﻿namespace Identity.Application.Authentication.Dtos;
 
-public  record AuthResponse(string AccessToken , string RefreshToken);
+public record AuthResponse
+ (
+    string AccessToken,
+    string RefreshToken,
+    DateTime RefreshTokenExpiration
+ );
 

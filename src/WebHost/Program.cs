@@ -86,9 +86,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(CorsPolicies.Spa, policy =>
     {
         policy
-        .WithOrigins(builder.Configuration.GetSection("SpaOrigins").Get<string[]>()!)
+        .WithOrigins(builder.Configuration.GetSection("CORS").Get<string[]>()!)
         .AllowAnyMethod()
         .AllowAnyHeader()
+        //.AllowCredentials()
         .SetPreflightMaxAge(TimeSpan.FromHours(1));
     });
 });
