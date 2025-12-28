@@ -49,7 +49,7 @@ public class LoginCommandHandler(
 
         await identityUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success( new AuthResponse(token, refreshToken));
+        return Result.Success( new AuthResponse(token, refreshToken,refreshTokenLifetimeProvider.GetExpiry()));
 
 
     }
