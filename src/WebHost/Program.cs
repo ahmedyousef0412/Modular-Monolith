@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Sales.Api;
 using System.Text;
 using System.Text.Json.Serialization;
+using WebHost.CQRS;
 using WebHost.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +79,22 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 
+#region CORS
+
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy(CorsPolicies.Spa, policy =>
+    {
+        policy
+        .WithOrigins(builder.Configuration.GetSection("SpaOrigins").Get<string[]>()!)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetPreflightMaxAge(TimeSpan.FromHours(1));
+    });
+});
+
+#endregion
+
 #region Configure TimeOut
 
 //builder.WebHost.ConfigureKestrel(options =>
@@ -95,9 +112,18 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
 app.UseHttpsRedirection();
 
-app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+//app.UseCors(CorsPolicies.Spa); I don't need policyName here because I use the default policy.
+app.UseCors();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
 app.MapControllers();
 
 #region Seeding Default Data
