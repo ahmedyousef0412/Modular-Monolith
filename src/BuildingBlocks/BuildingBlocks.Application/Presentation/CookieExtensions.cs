@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 
 namespace BuildingBlocks.Application.Presentation;
 public static class CookieExtensions

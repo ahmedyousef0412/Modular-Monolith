@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SharedKernel.Domain;
-
+﻿
 namespace BuildingBlocks.Application.Api;
 
 [ApiController]

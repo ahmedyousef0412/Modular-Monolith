@@ -1,5 +1,4 @@
-﻿using MediatR;
-
+﻿
 
 namespace BuildingBlocks.Application.Contracts;
 

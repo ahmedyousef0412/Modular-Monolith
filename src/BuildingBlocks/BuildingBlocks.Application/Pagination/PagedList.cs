@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
+﻿
 namespace BuildingBlocks.Application.Pagination;
 
 public class PagedList<T>(List<T> items, int pageNumber, int count, int pageSize)

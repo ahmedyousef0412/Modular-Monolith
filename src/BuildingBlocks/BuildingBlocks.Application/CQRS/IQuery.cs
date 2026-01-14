@@ -1,6 +1,4 @@
-﻿using MediatR;
-using SharedKernel.Domain;
-
+﻿
 namespace BuildingBlocks.Application.CQRS;
 
 

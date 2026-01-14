@@ -1,6 +1,4 @@
-﻿using SharedKernel.Entities;
-using System.Linq.Expressions;
-
+﻿
 namespace BuildingBlocks.Application.Abstractions;
 
 public interface IBaseRepository<T> where T : BaseEntity //later I will add IAggregateRoot

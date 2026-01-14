@@ -1,18 +1,3 @@
-using BuildingBlocks.Application.Abstractions;
-using BuildingBlocks.Application.Middlewares;
-using Identity.Api;
-using Identity.Application.Abstractions;
-using Identity.Application.Authentication;
-using Identity.Infrastructure.Persistence;
-using Identity.Infrastructure.Seeders;
-using Inventory.Api;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Sales.Api;
-using System.Text;
-using System.Text.Json.Serialization;
-using WebHost.CQRS;
-using WebHost.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +18,6 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
 
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         //JSON enums serialize as strings
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });

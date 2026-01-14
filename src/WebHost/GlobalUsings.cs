@@ -1,0 +1,15 @@
+﻿global using BuildingBlocks.Application.Abstractions;
+global using BuildingBlocks.Application.Middlewares;
+global using Identity.Api;
+global using Identity.Application.Abstractions;
+global using Identity.Application.Authentication;
+global using Identity.Infrastructure.Persistence;
+global using Identity.Infrastructure.Seeders;
+global using Inventory.Api;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.IdentityModel.Tokens;
+global using Sales.Api;
+global using System.Text;
+global using System.Text.Json.Serialization;
+global using WebHost.CQRS;
+global using WebHost.Services;

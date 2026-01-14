@@ -1,0 +1,14 @@
+﻿global using BuildingBlocks.Application.CQRS;
+global using MediatR;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Diagnostics;
+global using Microsoft.Extensions.Logging;
+global using SharedKernel.Domain;
+global using SharedKernel.Entities;
+global using SharedKernel.Entities.Behaviors;
+global using System.Linq.Expressions;
+global using System.Net;
+global using System.Text.Json;

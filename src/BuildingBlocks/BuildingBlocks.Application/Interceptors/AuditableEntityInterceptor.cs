@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using SharedKernel.Entities.Behaviors;
+﻿
 
 namespace BuildingBlocks.Application.Interceptors;
 
