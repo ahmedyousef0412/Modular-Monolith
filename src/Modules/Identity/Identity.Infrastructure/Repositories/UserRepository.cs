@@ -49,6 +49,6 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default)
     {
-        return !await _dbContext.Users.AnyAsync(x => x.Email== email, cancellationToken);
+        return await _dbContext.Users.AnyAsync(x => x.Email== email, cancellationToken);
     }
 }

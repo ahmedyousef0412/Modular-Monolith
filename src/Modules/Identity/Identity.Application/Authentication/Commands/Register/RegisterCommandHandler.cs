@@ -31,9 +31,9 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand,Guid>
     public async Task<Result<Guid>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
         var email = Email.Create(command.Email);
-        var existingUser = await _userRepository.IsEmailUniqueAsync(email,cancellationToken);
+        var isUnique = await _userRepository.IsEmailUniqueAsync(email,cancellationToken);
 
-        if (existingUser)
+        if (isUnique)
             throw new UserAlreadyExistsException(command.Email);
 
 

@@ -2,6 +2,7 @@
 using Identity.Application.Authentication.Commands.ForgotPassword;
 using Identity.Application.Authentication.Commands.Login;
 using Identity.Application.Authentication.Commands.RefreshToken;
+using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Authentication.Commands.ResetPassword;
 using Identity.Application.Authentication.Commands.RevokeToken;
 using MediatR;
@@ -13,7 +14,7 @@ namespace Identity.Api.Controllers;
 [ApiController]
 [Route("api/identity/auth")]
 
-public class AuthenticationController(IMediator mediator) : ControllerBase
+public class AuthenticationController(IMediator mediator, IWebHostEnvironment env) : ControllerBase
 {
 
     [HttpPost("login")]
@@ -21,9 +22,18 @@ public class AuthenticationController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(command,cancellationToken);
 
-        Response.SetRefreshTokenCookie(result.Value.RefreshToken, result.Value.RefreshTokenExpiration);
+        Response.SetRefreshTokenCookie(result.Value.RefreshToken, result.Value.RefreshTokenExpiration, env);
 
         return Ok(new { accessToken = result.Value.AccessToken });
+    }
+
+
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterCommand command, CancellationToken cancellationToken)
+    {
+        await mediator.Send(command,cancellationToken); 
+        return Ok();
     }
 
 
@@ -45,16 +55,23 @@ public class AuthenticationController(IMediator mediator) : ControllerBase
             return BadRequest(result.Error);
         }
 
-        Response.SetRefreshTokenCookie(result.Value.RefreshToken, result.Value.RefreshTokenExpiration);
+        Response.SetRefreshTokenCookie(result.Value.RefreshToken, result.Value.RefreshTokenExpiration, env);
 
         return Ok(new { accessToken = result.Value.AccessToken });
     }
 
 
-    [HttpPost("revoke")] 
-    public async Task<IActionResult> Revoke([FromBody] RevokeTokenCommand command, CancellationToken cancellationToken)
+    [HttpPost("revoke")]
+    public async Task<IActionResult> Revoke( CancellationToken cancellationToken)
     {
-        await mediator.Send(command, cancellationToken);
+        var tokenFromCookie = Request.Cookies["refreshToken"];
+
+        if (!string.IsNullOrEmpty(tokenFromCookie))
+        {
+            await mediator.Send(new RevokeTokenCommand(tokenFromCookie), cancellationToken);
+        }
+
+        Response.DeleteRefreshTokenCookie(env);
         return NoContent();
     }
 

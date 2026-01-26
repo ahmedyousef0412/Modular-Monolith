@@ -1,4 +1,6 @@
 
+using System.IdentityModel.Tokens.Jwt;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -32,6 +34,9 @@ var jwtSettings = builder.Configuration
     .Get<JwtSettings>() 
     ?? throw new InvalidOperationException("JwtSettings section is missing in appsettings.json");
 
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -42,6 +47,8 @@ builder.Services.AddAuthentication(options =>
     o.SaveToken = true;
     o.TokenValidationParameters = new TokenValidationParameters
     {
+        RoleClaimType = "role",
+        NameClaimType = "sub",
         ValidateIssuerSigningKey = true,
         ValidateIssuer = true,
         ValidateAudience = true,
@@ -65,15 +72,21 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 #region CORS
 
+
+var spaOrigins = builder.Configuration
+    .GetSection(CorsPolicies.Sections.SpaOrigins)
+    .Get<string[]>() ?? [];
+
+
 builder.Services.AddCors(options => 
 {
     options.AddPolicy(CorsPolicies.Spa, policy =>
     {
         policy
-        .WithOrigins(builder.Configuration.GetSection("CORS").Get<string[]>()!)
+        .WithOrigins(spaOrigins)
         .AllowAnyMethod()
         .AllowAnyHeader()
-        //.AllowCredentials()
+        .AllowCredentials()
         .SetPreflightMaxAge(TimeSpan.FromHours(1));
     });
 });
@@ -102,8 +115,8 @@ app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseHttpsRedirection();
 
 
-//app.UseCors(CorsPolicies.Spa); I don't need policyName here because I use the default policy.
-app.UseCors();
+app.UseCors(CorsPolicies.Spa); 
+//app.UseCors();
 
 app.UseAuthentication();
 
