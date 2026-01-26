@@ -1,0 +1,66 @@
+What Auth Providers Do:
+
+This code runs once when the application starts before 
+- any component is rendered
+- any route is loaded
+- any service is injected
+
+It is startup configuration code, not feature logic.
+
+makeEnvironmentProviders([ ... ]) => Register these Providers at the application level.
+
+-- Meaning:
+
+available everywhere
+
+singleton lifetime
+
+created once.
+
+
+provideAppInitializer =>
+
+code that runs once
+during app startup
+before Angular renders anything
+
+
+Used for:
+- restoring auth state
+- loading config
+- validating tokens
+
+
+Why not in a service?
+
+Because services are created lazily (when first injected).
+
+Auth needs to run immediately on startup, before any component uses the service.
+
+
+Why this is important?
+
+Without this:
+- User refreshes the page
+- Auth state is lost
+- App thinks user is logged out
+- UI flickers
+
+With this:
+- Token restored before UI
+- Guards work immediately
+- Interceptors have token ready
+
+
+Big picture (mental model):
+
+    App starts
+        ↓   
+    Auth initializer runs
+        ↓
+    Token loaded from storage
+        ↓
+    AuthFacade updated
+        ↓
+    App renders with correct auth state
+

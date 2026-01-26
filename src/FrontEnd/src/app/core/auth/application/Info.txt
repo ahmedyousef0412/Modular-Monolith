@@ -1,0 +1,28 @@
+                Component
+                |
+                v
+                AuthFacade ------------------+
+                |                        |
+                v                        v
+                AuthApi                  TokenStorage
+                |
+                v
+                Backend API (HTTP)
+
+
+
+        Complete Flow (step by step)
+
+        1. Component calls authFacade.login(email, password)
+
+        2. AuthFacade.login() calls AuthApi.login()
+
+        3. AuthApi.login() makes HTTP POST /api/auth/login
+
+        4. Backend returns JWT
+
+        5. AuthFacade stores JWT in TokenStorage
+
+        6. AuthFacade updates authState.session (optional)
+
+        7. Component now reacts to user being logged in

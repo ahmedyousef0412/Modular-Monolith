@@ -1,0 +1,9 @@
+
+
+Domain Layer:
+- auth-user.model.ts
+- auth-session.model.ts
+- auth.rules.ts
+
+Purely business logic and data structures.
+No dependencies on other layers.    
