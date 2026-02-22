@@ -30,6 +30,11 @@ public class ResetPasswordCommandHandler
             return Result.Failure(UserErrors.InvalidToken);
         }
 
+        if(command.NewPassword != command.ConfirmNewPassword)
+        {
+            return Result.Failure(UserErrors.PasswordsDoNotMatch);
+        }
+
         var newPasswordHash = passwordHasher.Hash(command.NewPassword);
 
         user.ChangePassword(newPasswordHash);

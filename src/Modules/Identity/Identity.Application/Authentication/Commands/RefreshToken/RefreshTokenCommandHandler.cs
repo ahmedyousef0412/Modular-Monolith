@@ -49,7 +49,7 @@ public class RefreshTokenCommandHandler
 
         await identityUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(new AuthResponse(newAccessToken, newRefreshToken,refreshTokenLifetimeProvider.GetExpiry()));
+        return Result.Success(new AuthResponse(newAccessToken, newRefreshToken,refreshTokenLifetimeProvider.GetExpiry(),true));
     }
 }
 

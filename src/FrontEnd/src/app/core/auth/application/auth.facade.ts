@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AuthApi } from "../infrastructure/auth.api";
 import { TokenStorage } from "../infrastructure/token.storage";
-import { LoginCommand } from "./auth.commands";
+import { ForgotPasswordCommand, LoginCommand, RefreshTokenCommand, RegisterCommand, ResetPasswordCommand, RevokeTokenCommand } from "./auth.commands";
 import { tap } from "rxjs";
 import { authState } from "./auth.state";
 import { Router } from "@angular/router";
@@ -30,8 +30,30 @@ export class AuthFacade {
         );
     }
 
-    logout() {
 
+    register(command: RegisterCommand) {
+        return this.api.register(command);
+    }
+    
+    forgotPassword(command: ForgotPasswordCommand) {
+        return this.api.forgotPassword(command);
+    }
+
+    resetPassword(command: ResetPasswordCommand) {
+        return this.api.resetPassword(command);
+    }
+
+    revokeToken(command: RevokeTokenCommand) {
+        return this.api.revokeToken(command);
+    }
+
+    refreshToken(command: RefreshTokenCommand) {
+        return this.api.refreshToken(command);
+    }
+
+
+
+    logout() {
         this.api.logout().subscribe({
             next: () => {
                 this.handleLocalLogout();
@@ -45,7 +67,8 @@ export class AuthFacade {
 
     private handleLocalLogout() {
         this.tokenStorage.clear();
-        authState.clearSession();
+        authState.clearSession();    
+        this.router.navigate(['/login']);
     }
 }
 

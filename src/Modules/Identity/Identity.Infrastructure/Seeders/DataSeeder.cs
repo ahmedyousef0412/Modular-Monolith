@@ -19,8 +19,7 @@ public class DataSeeder
         #region Roles
 
     
-        if (!await context.Roles.AnyAsync(r => r.Name == RoleConstants.Admin)
-            )
+        if (!await context.Roles.AnyAsync(r => r.Name == RoleConstants.Admin))
         {
             var admin = Role.Create("Admin", "Administrator role with full permissions");
             context.Roles.Add(admin);

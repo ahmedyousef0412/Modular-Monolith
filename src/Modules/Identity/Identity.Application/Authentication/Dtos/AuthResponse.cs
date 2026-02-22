@@ -4,6 +4,7 @@ public record AuthResponse
  (
     string AccessToken,
     string RefreshToken,
-    DateTime RefreshTokenExpiration
+    DateTime RefreshTokenExpiration,
+    bool IsPersistent
  );
 
