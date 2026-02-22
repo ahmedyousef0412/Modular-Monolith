@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { LoginCommand } from '../application/auth.commands';
+import { ForgotPasswordCommand, LoginCommand, RefreshTokenCommand, RegisterCommand, ResetPasswordCommand, RevokeTokenCommand } from '../application/auth.commands';
 import { map, Observable } from 'rxjs';
 import { AuthSession } from '../domain/auth-session.model';
 import { mapJwtToUser } from '../application/auth.mapper';
@@ -27,6 +27,28 @@ export class AuthApi {
                     };
                 }),
             );
+    }
+
+
+    register(command: RegisterCommand): Observable<string> {
+        return this.http.post<string>(AuthEndpoints.register, command)
+    }
+
+    revokeToken(command:RevokeTokenCommand): Observable<void> {
+        return this.http.post<void>(AuthEndpoints.revokeToken, command, { withCredentials: true });
+    }
+
+    refreshToken(command:RefreshTokenCommand): Observable<void> {
+        return this.http.post<void>(AuthEndpoints.refreshToken, command, { withCredentials: true });
+    }
+    
+
+    forgotPassword(command:ForgotPasswordCommand): Observable<void> {
+        return this.http.post<void>(AuthEndpoints.forgotPassword, command);
+    }
+
+    resetPassword(command: ResetPasswordCommand): Observable<void> {
+        return this.http.post<void>(AuthEndpoints.resetPassword, command);
     }
 
     logout(): Observable<void> {

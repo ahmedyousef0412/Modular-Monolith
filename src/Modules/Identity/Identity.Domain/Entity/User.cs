@@ -20,6 +20,7 @@ public class User : BaseEntity
 
     public string? PasswordResetToken { get; private set; }
     public DateTime? PasswordResetTokenExpiresOn { get; private set; }
+    public DateTime? LastPasswordResetRequestedAt { get; private set; }
 
     private readonly List<UserRole> _userRoles = [];
     public IReadOnlyCollection<UserRole> UserRoles => _userRoles.AsReadOnly();
@@ -93,6 +94,7 @@ public class User : BaseEntity
 
         PasswordResetToken = token;
         PasswordResetTokenExpiresOn = expiresOn;
+        LastPasswordResetRequestedAt = DateTime.UtcNow;
     }
 
     public bool VerifyResetToken(string token)
@@ -106,6 +108,16 @@ public class User : BaseEntity
         PasswordResetToken = null;
         PasswordResetTokenExpiresOn = null;
     }
+
+    public bool PasswordResetRequestedRecently()
+    {
+        if (LastPasswordResetRequestedAt is null)
+            return false;
+
+        return LastPasswordResetRequestedAt > DateTime.UtcNow.AddMinutes(-5);
+    }
+
+
 
     public Result AssignRole(Role role)
     {

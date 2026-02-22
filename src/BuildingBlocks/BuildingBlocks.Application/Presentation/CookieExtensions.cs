@@ -6,15 +6,16 @@ public static class CookieExtensions
 {
 
     public static CookieOptions GetBaseOptions(IWebHostEnvironment env)
-
     {
-        var isDevelopment = env.IsDevelopment();
+        
         return new CookieOptions
         {
             HttpOnly = true,
-            Secure = !isDevelopment,
-            SameSite = isDevelopment ? SameSiteMode.Lax : SameSiteMode.None,
+            Secure = true,
+            SameSite =  SameSiteMode.None,
             IsEssential = true,
+            Expires = DateTime.UtcNow.AddDays(14),
+            Path = "/",
         };
         
     }

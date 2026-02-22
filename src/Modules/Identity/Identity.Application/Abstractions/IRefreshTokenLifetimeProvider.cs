@@ -2,5 +2,5 @@
 
 public interface IRefreshTokenLifetimeProvider
 {
-    DateTime GetExpiry();
+    DateTime GetExpiry(bool rememberMe = false);
 }

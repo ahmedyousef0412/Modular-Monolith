@@ -3,13 +3,15 @@ using Identity.Application.Abstractions;
 using Identity.Domain.Abstractions;
 using Identity.Domain.ValueObjects;
 using SharedKernel.Domain;
+using System.Security.Cryptography;
 
 namespace Identity.Application.Authentication.Commands.ForgotPassword;
 
 public class ForgotPasswordCommandHandler
     (
       IUserRepository userRepository,
-      IIdentityUnitOfWork unitOfWork
+      IIdentityUnitOfWork unitOfWork,
+      IPasswordHasher passwordHasher
 
     ) : ICommandHandler<ForgotPasswordCommand>
 {
@@ -20,14 +22,19 @@ public class ForgotPasswordCommandHandler
         var user = await userRepository.GetByEmailAsync(email, cancellationToken);
 
         if (user is null)
-        {
             return Result.Success();
-        }
+        
+        if (user.PasswordResetRequestedRecently())
+            return Result.Success();
 
-        var resetToken = Guid.NewGuid().ToString();
+
+        var rawToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+
+        var hashedToken = passwordHasher.Hash(rawToken);
         var expiresOn = DateTime.UtcNow.AddMinutes(30);
+       
 
-        user.RequestPasswordReset(resetToken, expiresOn);
+        user.RequestPasswordReset(hashedToken, expiresOn);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

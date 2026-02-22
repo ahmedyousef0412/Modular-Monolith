@@ -13,8 +13,9 @@ public class RefreshTokenLifetimeProvider : IRefreshTokenLifetimeProvider
     {
         _settings = options.Value;
     }
-    public DateTime GetExpiry()
+    public DateTime GetExpiry(bool rememberMe = false)
     {
-        return DateTime.UtcNow.AddDays(_settings.RefreshTokenExpirationInDays);
+        var days = rememberMe ? _settings.RefreshTokenExpirationInDays : 1;
+        return DateTime.UtcNow.AddDays(days);
     }
 }

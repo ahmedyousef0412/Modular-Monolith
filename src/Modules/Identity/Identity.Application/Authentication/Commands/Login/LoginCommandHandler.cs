@@ -14,7 +14,7 @@ public class LoginCommandHandler(
     IPasswordHasher passwordHasher,
     IUserClaimsProvider claimsProvider,
     ITokenProvider tokenProvider,
-   IRefreshTokenLifetimeProvider refreshTokenLifetimeProvider)
+    IRefreshTokenLifetimeProvider refreshTokenLifetimeProvider)
     : ICommandHandler<LoginCommand, AuthResponse>
 {
 
@@ -43,13 +43,13 @@ public class LoginCommandHandler(
         var token = tokenProvider.GenerateAccessToken(claims);
         var refreshToken = tokenProvider.GenerateRefreshToken();
 
+        var expiry = refreshTokenLifetimeProvider.GetExpiry(command.RememberMe);
 
-
-        user.AddSession(refreshToken, refreshTokenLifetimeProvider.GetExpiry());
+        user.AddSession(refreshToken, expiry);
 
         await identityUnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success( new AuthResponse(token, refreshToken,refreshTokenLifetimeProvider.GetExpiry()));
+        return Result.Success( new AuthResponse(token, refreshToken, expiry,command.RememberMe));
 
 
     }
