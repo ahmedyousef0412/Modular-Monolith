@@ -1,12 +1,4 @@
-﻿using Identity.Application.Abstractions;
-using Identity.Application.Authentication;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-
-namespace Identity.Infrastructure.Services;
+﻿namespace Identity.Infrastructure.Services;
 
 public class TokenProvider(IOptions<JwtSettings> jwtSettings) : ITokenProvider
 {

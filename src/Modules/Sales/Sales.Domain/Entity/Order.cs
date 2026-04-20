@@ -23,6 +23,8 @@ public class Order : BaseEntity
 
         CustomerId = customerId;
         Status = OrderStatus.Draft; 
+
+        
     }
 
 

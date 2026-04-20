@@ -5,7 +5,7 @@ using SharedKernel.Exceptions;
 
 namespace Identity.Domain.Entity;
 
-public class Role : BaseEntity
+public class Role : AggregateRoot
 {
 
     public string Name { get; private set; }

@@ -1,18 +1,4 @@
-﻿using BuildingBlocks.Application.Interceptors;
-using BuildingBlocks.Application.Security;
-using Identity.Application.Abstractions;
-using Identity.Application.Authentication;
-using Identity.Domain.Abstractions;
-using Identity.Infrastructure.Persistence;
-using Identity.Infrastructure.Repositories;
-using Identity.Infrastructure.Security;
-using Identity.Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using SharedKernel.Constants;
-
-namespace Identity.Infrastructure;
+﻿namespace Identity.Infrastructure;
 
 public static class IdentityInfrastructureModule
 {
@@ -31,7 +17,7 @@ public static class IdentityInfrastructureModule
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
 
-        services.AddScoped<IIdentityDbContext, IdentityDbContext>();
+       
         services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
 
         services.AddAuthorization(options =>
@@ -68,8 +54,7 @@ public static class IdentityInfrastructureModule
                 .AddInterceptors(interceptor);
         });
 
-
-
+      
         return services;
     }
 }

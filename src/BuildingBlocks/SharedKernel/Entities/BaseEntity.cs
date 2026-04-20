@@ -1,8 +1,9 @@
-﻿using SharedKernel.Entities.Behaviors;
+﻿
+using SharedKernel.Entities.Behaviors;
 
 namespace SharedKernel.Entities;
 
-public abstract class BaseEntity:IAuditableEntity,ISoftDeletable
+public abstract class BaseEntity : IAuditableEntity, ISoftDeletable
 {
 
     public Guid Id { get; protected set; } = Guid.NewGuid();
@@ -23,7 +24,5 @@ public abstract class BaseEntity:IAuditableEntity,ISoftDeletable
         IsDeleted = true;
 
     }
-
-    //protected void AddDomainEvent(IDomainEvent ev) { }
 }
 //protected set Only this class & derived classe

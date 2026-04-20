@@ -1,4 +1,5 @@
-﻿using Identity.Domain.Exceptions;
+﻿using Identity.Domain.Events.Dtos;
+using Identity.Domain.Exceptions;
 using Identity.Domain.ValueObjects;
 using SharedKernel.Common;
 using SharedKernel.Domain;
@@ -7,13 +8,12 @@ using SharedKernel.Exceptions;
 
 namespace Identity.Domain.Entity;
 
-public class User : BaseEntity
+public class User : AggregateRoot
 {
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     //public string? AvatarUrl { get; private set; }
     public Email Email { get; private set; }
-
 
     public string PasswordHash { get; private set; }
     public bool IsActive { get; private set; }
@@ -51,11 +51,16 @@ public class User : BaseEntity
         Guard.AgainstNullOrEmpty(passwordHash, nameof(passwordHash));
 
 
+       
+        var user =  new User(Guid.NewGuid(), firstName, lastName, email, passwordHash);
 
-        // Raise Event (e.g., to send Welcome Email)
-        //user.AddDomainEvent(new UserRegisteredEvent(user.Id, user.Email));
 
-        return new User(Guid.NewGuid(), firstName, lastName, email, passwordHash);
+        // Raise Event (e.g., to send Welcome Email) , Will test it
+
+
+        user.RaiseDomainEvent(new UserRegistereddEvent(user.Id, user.Email));
+
+        return user;
     }
 
 
@@ -84,7 +89,6 @@ public class User : BaseEntity
 
         RevokeAllRefreshTokens("the password changed");
     }
-
 
     public void RequestPasswordReset(string token ,DateTime expiresOn)
     {

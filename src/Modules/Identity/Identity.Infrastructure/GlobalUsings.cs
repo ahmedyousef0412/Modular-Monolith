@@ -1,0 +1,19 @@
+﻿global using BuildingBlocks.Application.Interceptors;
+global using BuildingBlocks.Application.Security;
+global using Identity.Application.Abstractions;
+global using Identity.Application.Authentication;
+global using Identity.Domain.Abstractions;
+global using Identity.Infrastructure.Persistence;
+global using Identity.Infrastructure.Repositories;
+global using Identity.Infrastructure.Security;
+global using Identity.Infrastructure.Services;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using SharedKernel.Constants;
+
+global using Microsoft.Extensions.Options;
+global using Microsoft.IdentityModel.Tokens;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using System.Security.Cryptography;
