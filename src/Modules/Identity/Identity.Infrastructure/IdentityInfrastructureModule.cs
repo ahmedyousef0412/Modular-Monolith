@@ -3,7 +3,7 @@
 public static class IdentityInfrastructureModule
 {
 
-    public static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services ,IConfiguration configuration)
+    public static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
@@ -17,7 +17,7 @@ public static class IdentityInfrastructureModule
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
 
-       
+
         services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
 
         services.AddAuthorization(options =>
@@ -33,13 +33,16 @@ public static class IdentityInfrastructureModule
             }
         });
 
-        services.AddScoped<IPermissionService, PermissionService>();
-       
+
         services.AddOptions<JwtSettings>()
             .BindConfiguration(JwtSettings.SectionName)
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
+        services.AddScoped<IPermissionService, PermissionService>();
+
+        services.AddScoped<IIdentityDbContext>(sp =>
+                                 sp.GetRequiredService<IdentityDbContext>());
 
         services.AddDbContext<IdentityDbContext>((sp, options) =>
         {

@@ -13,6 +13,9 @@ public class Product : BaseEntity
 
     public decimal Price { get; private set; }
 
+
+
+
     private Product() { } // Private constructor for EF Core
 
 

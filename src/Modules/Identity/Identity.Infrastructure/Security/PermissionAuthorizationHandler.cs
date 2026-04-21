@@ -1,7 +1,5 @@
-﻿using BuildingBlocks.Application.Security;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Authorization;
+
 
 namespace Identity.Infrastructure.Security;
 

@@ -6,12 +6,15 @@ public abstract class BaseUnitOfWork<TContext> : IUnitOfWork where TContext : Db
 {
     private readonly TContext _context;
     private readonly IMediator _mediator;
+   
 
     public BaseUnitOfWork(TContext context, IMediator mediator)
     {
         _context = context;
         _mediator = mediator;
     }
+
+  
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
