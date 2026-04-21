@@ -1,6 +1,4 @@
-﻿using BuildingBlocks.Application.Security;
-using Identity.Application.Abstractions;
-using Microsoft.EntityFrameworkCore;
+﻿
 
 namespace Identity.Infrastructure.Security;
 

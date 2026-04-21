@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using BuildingBlocks.Application.Behaviors;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Identity.Application.Abstractions;
 using Identity.Application.Authentication;
@@ -19,6 +20,9 @@ public static class IdentityApplicationModule
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(IdentityApplicationModule).Assembly);
+
+            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssembly(typeof(IdentityApplicationModule).Assembly);

@@ -1,11 +1,12 @@
 ﻿using BuildingBlocks.Application.Persistence;
-using Identity.Application.Abstractions;
+using MediatR;
+
 
 namespace Identity.Infrastructure.Persistence;
 
 public class IdentityUnitOfWork : BaseUnitOfWork<IdentityDbContext>, IIdentityUnitOfWork
 {
-    public IdentityUnitOfWork(IdentityDbContext context) : base(context)
+    public IdentityUnitOfWork(IdentityDbContext context, IMediator mediator) : base(context, mediator)
     {
     }
 }
